@@ -10,6 +10,7 @@
 - [smapping](https://github.com/mashingan/smapping)
 
 # Folders structure
+```
 ├── controller
 │   └── userController.go
 ├── entity
@@ -37,6 +38,7 @@
 ├── LICENSE
 ├── main.go
 └── README.md
+```
 
 # Folder definition
 - Controller
