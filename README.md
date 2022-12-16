@@ -9,6 +9,28 @@
 - [crypto](https://pkg.go.dev/golang.org/x/crypto)
 - [smapping](https://github.com/mashingan/smapping)
 
+# How to build
+## Install migrate
+> https://github.com/golang-migrate/migrate/tree/master/cmd/migrate
+
+## Generate vendor and migrations
+```bash
+go mod vendor
+
+# Up migration
+# migrate -database "mysql://{user}:{password}@tcp({host}:{port})/{project name}" -path ./migrations up
+migrate -database "mysql://root:@tcp(127.0.0.1:3306)/go-todolist" -path ./migrations up
+
+# Down migration
+# migrate -database "mysql://{user}:{password}@tcp({host}:{port})/{project name}" -path ./migrations down
+migrate -database "mysql://root:@tcp(127.0.0.1:3306)/go-todolist" -path ./migrations down
+```
+
+## Run go
+```bash
+go run main.go
+```
+
 # Folders structure
 ```
 ├── controller
