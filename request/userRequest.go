@@ -8,7 +8,7 @@ type LoginRequest struct {
 
 // Create register request struct when user register from /register URL
 type RegisterRequest struct {
-	Username string `json:"username" form:"username" binding:"required,min=3,max=50"`
-	Email    string `json:"email" form:"email" binding:"required,email"`
-	Password string `json:"password" form:"password" binding:"required,min=6"`
+	Username string `form:"username" json:"username" binding:"required,min=3,max=50"`
+	Email    string `form:"email" json:"email" binding:"required,email"`
+	Password string `form:"password" json:"password" binding:"required,min=6"`
 }
