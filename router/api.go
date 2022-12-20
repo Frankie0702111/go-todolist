@@ -17,8 +17,8 @@ var (
 	v1 = "/api/v1"
 
 	db             *gorm.DB             = gorm_utils.InitMySQL()
-	userRepository entity.UserEntity    = entity.NewUserEntity(db)
-	userService    services.UserService = services.NewUserService(userRepository)
+	userEntity     entity.UserEntity    = entity.NewUserEntity(db)
+	userService    services.UserService = services.NewUserService(userEntity)
 	userController                      = controller.NewUserController(userService)
 )
 
@@ -36,6 +36,7 @@ func SetupRouter() *gin.Engine {
 
 	// r := gin.New()
 	r := gin.Default()
+	r.SetTrustedProxies(nil)
 
 	authRoutes := r.Group(v1 + "/auth")
 	{

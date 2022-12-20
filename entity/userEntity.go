@@ -14,7 +14,7 @@ type UserEntity interface {
 	InsertUser(user model.User) model.User
 
 	//VerifyCredential is verify user login
-	VerifyCredential(email string, password string) interface{}
+	VerifyCredential(email string) interface{}
 
 	// FindByEmail(email string) model.User
 }
@@ -41,7 +41,7 @@ func (db *userConnection) InsertUser(user model.User) model.User {
 }
 
 // VerifyCredential is verify user credential and return user model to caller function if credential is correct or return nil if credential is incorrect
-func (db *userConnection) VerifyCredential(email string, password string) interface{} {
+func (db *userConnection) VerifyCredential(email string) interface{} {
 	var user model.User
 	res := db.connection.Where("email = ?", email).Take(&user)
 
