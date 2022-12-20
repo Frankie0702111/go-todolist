@@ -65,33 +65,33 @@ go run main.go
 
 # Folder definition
 - Controller
-> 接收 HTTP request 調用 request & service
+> 接收 HTTP request 調用 request & service <br>
 > Receiving HTTP requests calling requests and services
 
 - Request
-> 協助 controller 驗證 request parameters
+> 協助 controller 驗證 request parameters <br>
 > Assist controller validation request parameters
 
 - Service
-> 協助 controller 處理業務邏輯
+> 協助 controller 處理業務邏輯 <br>
 > Assist controller with business logic
 
 - Entity
-> 協助 service 調用 sql query
+> 協助 service 調用 sql query <br>
 > Assist service in calling sql query
 
 - Model
-> 作為返回的對象
+> 作為返回的對象 <br>
 > As a returned object
 
 - Migration
-> 建立 datatable 詳細資訊
+> 建立 datatable 詳細資訊 <br>
 > Create datatable details
 
 - Router
-> API 路由位置
+> API 路由位置 <br>
 > API route locations
 
 - Utils
-> 模組化程式碼置放處，提供專案調用
+> 模組化程式碼置放處，提供專案調用 <br>
 > Modular code placement for project calls
