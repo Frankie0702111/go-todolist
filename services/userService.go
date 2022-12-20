@@ -34,7 +34,7 @@ func NewUserService(userEntity entity.UserEntity) UserService {
 // VerifyCredential is verify user credential and return user model to caller function
 func (s *userService) VerifyCredential(email string, password string) interface{} {
 	// Verify user credential and return user model to caller function
-	res := s.userEntity.VerifyCredential(email, password)
+	res := s.userEntity.VerifyCredential(email)
 
 	// if res is user model then return user model to caller function
 	if v, ok := res.(model.User); ok {

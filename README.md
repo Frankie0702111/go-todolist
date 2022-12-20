@@ -1,5 +1,6 @@
 # Project description
-簡易的備忘錄專案
+這是一個簡單的待辦事項專案
+It is a simple todo list project
 
 # Project plugins
 - [Gin](https://github.com/gin-gonic/gin)
@@ -65,24 +66,32 @@ go run main.go
 # Folder definition
 - Controller
 > 接收 HTTP request 調用 request & service
+> Receiving HTTP requests calling requests and services
 
 - Request
-> 輔助 controller 驗證 request parameters
+> 協助 controller 驗證 request parameters
+> Assist controller validation request parameters
 
 - Service
-> 輔助 controller 處理業務邏輯
+> 協助 controller 處理業務邏輯
+> Assist controller with business logic
 
 - Entity
-> 輔助 service 調用 sql query
+> 協助 service 調用 sql query
+> Assist service in calling sql query
 
 - Model
 > 作為返回的對象
+> As a returned object
 
 - Migration
 > 建立 datatable 詳細資訊
+> Create datatable details
 
 - Router
 > API 路由位置
+> API route locations
 
 - Utils
-> 放置模組化位置，提供整個專案調用
+> 模組化程式碼置放處，提供專案調用
+> Modular code placement for project calls
