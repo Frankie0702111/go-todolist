@@ -6,6 +6,7 @@ import (
 	"go-todolist/services"
 	"go-todolist/utils/responses"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -20,13 +21,19 @@ type UserController interface {
 type userController struct {
 	// inject user service
 	userService services.UserService
+
+	// inject jwt service
+	jwtService services.JWTService
 }
 
 // Create a new instance of UserController with userService and jwtService injected as dependency
-func NewUserController(userService services.UserService) UserController {
+func NewUserController(userService services.UserService, jwtService services.JWTService) UserController {
 	return &userController{
 		// inject user service
 		userService: userService,
+
+		// inject jwt service
+		jwtService: jwtService,
 	}
 }
 
@@ -48,6 +55,15 @@ func (h *userController) Login(c *gin.Context) {
 	// Check if the email and password is valid
 	loginResult := h.userService.VerifyCredential(input.Email, input.Password)
 	if v, ok := loginResult.(model.User); ok {
+		generatedToken := h.jwtService.GenerateToken(strconv.Itoa(int(v.ID)))
+
+		if len(generatedToken) < 1 {
+			response := responses.ErrorsResponse(http.StatusBadRequest, "Failed to process request", "Signature failed", responses.EmptyObject{})
+			c.AbortWithStatusJSON(http.StatusBadRequest, response)
+			return
+		}
+
+		v.Token = generatedToken
 		response := responses.SuccessResponse(http.StatusOK, "Login Successfully", v)
 		c.JSON(http.StatusOK, response)
 		return
@@ -76,6 +92,12 @@ func (h *userController) Register(c *gin.Context) {
 	// if the email is valid and unique in the database then register the user
 	// create new user
 	createdUser := h.userService.CreateUser(input)
+
+	if len(createdUser.Password) < 1 {
+		response := responses.ErrorsResponse(http.StatusBadRequest, "Failed to process request", "Failed to hash a password", responses.EmptyObject{})
+		c.AbortWithStatusJSON(http.StatusBadRequest, response)
+		return
+	}
 
 	// response with the user data and token
 	response := responses.SuccessResponse(http.StatusCreated, "Register Success", createdUser)

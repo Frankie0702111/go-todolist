@@ -1,5 +1,5 @@
 # Project description
-這是一個簡單的待辦事項專案
+這是一個簡單的待辦事項專案 <br>
 It is a simple todo list project
 
 # Project plugins
@@ -9,6 +9,7 @@ It is a simple todo list project
 - [GoDotEnv](https://github.com/joho/godotenv)
 - [crypto](https://pkg.go.dev/golang.org/x/crypto)
 - [smapping](https://github.com/mashingan/smapping)
+- [golang-jwt](https://github.com/golang-jwt/jwt)
 
 # How to build
 ## Install migrate
@@ -38,6 +39,8 @@ go run main.go
 │   └── userController.go
 ├── entity
 │   └── userEntity.go
+├── middleware
+│   └── jwt.go
 ├── migration
 │   ├── 20221129000000_create_users_table.down.sql
 │   └── 20221129000000_create_users_table.up.sql
@@ -48,6 +51,7 @@ go run main.go
 ├── router
 │   └── api.go
 ├── services
+│   ├── jwtService.go
 │   └── userService.go
 ├── utils
 │   ├── gorm
@@ -68,29 +72,33 @@ go run main.go
 > 接收 HTTP request 調用 request & service <br>
 > Receiving HTTP requests calling requests and services
 
-- Request
-> 協助 controller 驗證 request parameters <br>
-> Assist controller validation request parameters
-
-- Service
-> 協助 controller 處理業務邏輯 <br>
-> Assist controller with business logic
-
 - Entity
 > 協助 service 調用 sql query <br>
 > Assist service in calling sql query
 
-- Model
-> 作為返回的對象 <br>
-> As a returned object
+- Middleware
+> 中介層，負責過濾進入的資料 <br>
+> Intermediary layer, responsible for filtering incoming data
 
 - Migration
 > 建立 datatable 詳細資訊 <br>
 > Create datatable details
 
+- Model
+> 作為返回的對象 <br>
+> As a returned object
+
+- Request
+> 協助 controller 驗證 request parameters <br>
+> Assist controller validation request parameters
+
 - Router
 > API 路由位置 <br>
 > API route locations
+
+- Service
+> 協助 controller 處理業務邏輯 <br>
+> Assist controller with business logic
 
 - Utils
 > 模組化程式碼置放處，提供專案調用 <br>
