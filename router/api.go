@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go-todolist/controller"
 	"go-todolist/entity"
+	"go-todolist/middleware"
 	"go-todolist/services"
 	gorm_utils "go-todolist/utils/gorm"
 	"os"
@@ -19,7 +20,8 @@ var (
 	db             *gorm.DB             = gorm_utils.InitMySQL()
 	userEntity     entity.UserEntity    = entity.NewUserEntity(db)
 	userService    services.UserService = services.NewUserService(userEntity)
-	userController                      = controller.NewUserController(userService)
+	jwtService     services.JWTService  = services.NewJWTService()
+	userController                      = controller.NewUserController(userService, jwtService)
 )
 
 func SetupRouter() *gin.Engine {
@@ -42,6 +44,15 @@ func SetupRouter() *gin.Engine {
 	{
 		authRoutes.POST("/login", userController.Login)
 		authRoutes.POST("/register", userController.Register)
+	}
+
+	test := r.Group(v1+"/test", middleware.AuthorizeJWT(jwtService))
+	{
+		test.GET("/token", func(c *gin.Context) {
+			c.JSON(200, gin.H{
+				"message": "Token verification success.",
+			})
+		})
 	}
 
 	err := r.Run(appPort)

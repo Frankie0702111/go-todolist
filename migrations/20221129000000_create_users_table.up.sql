@@ -9,9 +9,9 @@ CREATE TABLE IF NOT EXISTS `users`
   `updated_at`  timestamp     NOT NULL  DEFAULT NOW()   COMMENT '更新時間'
 );
 
-create index `idx_user_id` on `users` (`email`) using BTREE;
+create index `idx_email` on `users` (`email`) using BTREE;
 create index `idx_created_at` on `users` (`created_at` desc) using BTREE;
 create index `idx_updated_at` on `users` (`updated_at` desc) using BTREE;
 
 -- Password : 12345678
-INSERT INTO `users` VALUES (1, 'admin', '$2a$04$xSVWWmqozt9ir0NY6A7yYeGc/JGG3zASnynjAMPF1YngOCvkd3QqK', 'admin@test.com', 1, '2022-11-29 09:00:00', '2022-11-29 09:00:00');
+INSERT INTO `users` VALUES (1, 'admin', 'admin@test.com', '$2a$04$xSVWWmqozt9ir0NY6A7yYeGc/JGG3zASnynjAMPF1YngOCvkd3QqK', 1, '2022-11-29 09:00:00', '2022-11-29 09:00:00');
