@@ -55,6 +55,12 @@ func SetupRouter() *gin.Engine {
 		})
 	}
 
+	auth := r.Group(v1+"/auth", middleware.AuthorizeJWT(jwtService))
+	{
+		auth.POST("refresh", userController.RefreshToken)
+		auth.POST("logout", userController.Logout)
+	}
+
 	err := r.Run(appPort)
 	if err != nil {
 		return nil
