@@ -1,11 +1,11 @@
 # Project description
 這是一個簡單的待辦事項專案 <br>
-備註:
+備註: <br>
 1. jwt-token TTL 時間預設 900 秒，中介層驗證 token TTL 成功時，計算該 token TTL 是否低於 5 分鐘，低於則重新給予一組新的 token。
 2. logout 僅回傳成功的資訊，須由前端開發者主動清除使用者 token 資訊 (未開發白名單或黑名單機制)。
 
-It is a simple todo list project
-Note:
+It is a simple todo list project <br>
+Note: <br>
 1. jwt-token TTL time is preset to 900 seconds. When the middleware verifies the success of token TTL, it will calculate whether the token TTL is lower than 5 minutes, and if it is lower, a new set of token will be given again.
 2. The logout only returns successful information, and the front-end developer must take the initiative to clear the user token information (no whitelist or blacklist mechanism has been developed).
 
