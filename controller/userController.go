@@ -7,6 +7,8 @@ import (
 	"go-todolist/utils/responses"
 	"net/http"
 	"strconv"
+	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,6 +17,8 @@ import (
 type UserController interface {
 	Login(c *gin.Context)
 	Register(c *gin.Context)
+	RefreshToken(c *gin.Context)
+	Logout(c *gin.Context)
 }
 
 // User Controller struct to implement UserController interface
@@ -41,6 +45,7 @@ func NewUserController(userService services.UserService, jwtService services.JWT
 func (h *userController) Login(c *gin.Context) {
 	// create new instance of LoginRequest
 	var input request.LoginRequest
+	jwtTTL := services.GetTokenTTL()
 
 	// bind the input with the request body
 	err := c.ShouldBindJSON(&input)
@@ -55,7 +60,7 @@ func (h *userController) Login(c *gin.Context) {
 	// Check if the email and password is valid
 	loginResult := h.userService.VerifyCredential(input.Email, input.Password)
 	if v, ok := loginResult.(model.User); ok {
-		generatedToken := h.jwtService.GenerateToken(strconv.Itoa(int(v.ID)))
+		generatedToken := h.jwtService.GenerateToken(strconv.Itoa(int(v.ID)), time.Now().Add(time.Duration(jwtTTL)*time.Second))
 
 		if len(generatedToken) < 1 {
 			response := responses.ErrorsResponse(http.StatusBadRequest, "Failed to process request", "Signature failed", responses.EmptyObject{})
@@ -64,13 +69,13 @@ func (h *userController) Login(c *gin.Context) {
 		}
 
 		v.Token = generatedToken
-		response := responses.SuccessResponse(http.StatusOK, "Login Successfully", v)
+		response := responses.SuccessResponse(http.StatusOK, "Login successfully", v)
 		c.JSON(http.StatusOK, response)
 		return
 	}
 
 	// If the email and password is not valid
-	response := responses.ErrorsResponse(401, "Failed to process request", "Invalid Credential", responses.EmptyObject{})
+	response := responses.ErrorsResponse(401, "Failed to process request", "Invalid credential", responses.EmptyObject{})
 	c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 }
 
@@ -104,4 +109,65 @@ func (h *userController) Register(c *gin.Context) {
 
 	// return the response
 	c.JSON(http.StatusCreated, response)
+}
+
+func (h *userController) RefreshToken(c *gin.Context) {
+	var refreshToken model.RefreshToken
+
+	authHeader := c.GetHeader("Authorization")
+
+	if authHeader == "" {
+		response := responses.ErrorsResponse(401, "Failed to process request", "No token found", nil)
+		c.AbortWithStatusJSON(http.StatusBadRequest, response)
+		return
+	}
+
+	splitToken := strings.Split(authHeader, "Bearer ")
+	if len(splitToken) != 2 {
+		response := responses.ErrorsResponse(401, "Failed to process request", "Bearer token not in proper format", nil)
+		c.AbortWithStatusJSON(http.StatusBadRequest, response)
+		return
+	}
+	authHeader = strings.TrimSpace(splitToken[1])
+
+	// Refresh the token
+	token := h.jwtService.RefreshToken(authHeader)
+
+	if len(token) < 1 {
+		response := responses.ErrorsResponse(401, "Failed to process request", "Token contains an invalid number of segments", nil)
+		c.AbortWithStatusJSON(http.StatusBadRequest, response)
+		return
+	}
+
+	refreshToken.Token = token
+	response := responses.SuccessResponse(http.StatusOK, "Refresh token successfully", refreshToken)
+	c.JSON(http.StatusOK, response)
+	return
+}
+
+func (h *userController) Logout(c *gin.Context) {
+	// var refreshToken model.RefreshToken
+	// authHeader := c.GetHeader("Authorization")
+
+	// if authHeader == "" {
+	// 	response := responses.ErrorsResponse(401, "Failed to process request", "No token found", nil)
+	// 	c.AbortWithStatusJSON(http.StatusBadRequest, response)
+	// 	return
+	// }
+
+	// splitToken := strings.Split(authHeader, "Bearer ")
+	// if len(splitToken) != 2 {
+	// 	response := responses.ErrorsResponse(401, "Failed to process request", "Bearer token not in proper format", nil)
+	// 	c.AbortWithStatusJSON(http.StatusBadRequest, response)
+	// 	return
+	// }
+	// authHeader = strings.TrimSpace(splitToken[1])
+
+	// // Refresh the token
+	// token := h.jwtService.GenerateToken(authHeader, time.Now())
+
+	// refreshToken.Token = token
+	response := responses.SuccessResponse(http.StatusOK, "Successfully logged out", nil)
+	c.JSON(http.StatusOK, response)
+	return
 }
