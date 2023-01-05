@@ -2,6 +2,7 @@ package gorm
 
 import (
 	"fmt"
+	"go-todolist/utils/log"
 	"os"
 	"time"
 
@@ -14,7 +15,7 @@ func InitMySQL() *gorm.DB {
 	// Load .env file
 	errEnv := godotenv.Load()
 	if errEnv != nil {
-		panic("Failed to load env file")
+		log.Panic("Failed to load env file")
 	}
 
 	dbUser := os.Getenv("DB_USER")
@@ -30,10 +31,8 @@ func InitMySQL() *gorm.DB {
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
-		fmt.Println("Failed to connect database", err)
-		// panic("failed to connect database")
-	} else {
-		fmt.Println("Successfully connected database")
+		fmt.Println("Failed to connect database : " + err.Error())
+		log.Panic("Failed to connect database : " + err.Error())
 	}
 
 	sqlDB, err := db.DB()
@@ -61,10 +60,8 @@ func Close(db *gorm.DB) {
 	dbSQL, err := db.DB()
 
 	if err != nil {
-		fmt.Println("Failed to close connection form database", err)
-		// panic("Failed to close connection form database")
-	} else {
-		fmt.Println("successfully closed connection form database")
+		fmt.Println("Failed to close connection form database : " + err.Error())
+		log.Panic("Failed to close connection form database : " + err.Error())
 	}
 
 	// Close the database connection

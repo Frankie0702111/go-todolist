@@ -7,9 +7,12 @@ import (
 	"go-todolist/middleware"
 	"go-todolist/services"
 	gorm_utils "go-todolist/utils/gorm"
+	"go-todolist/utils/log"
+	redis_utils "go-todolist/utils/redis"
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v8"
 	"github.com/joho/godotenv"
 	"gorm.io/gorm"
 )
@@ -18,9 +21,11 @@ var (
 	v1 = "/api/v1"
 
 	db             *gorm.DB             = gorm_utils.InitMySQL()
+	rdb            *redis.Client        = redis_utils.InitRedis()
 	userEntity     entity.UserEntity    = entity.NewUserEntity(db)
+	redisEntity    entity.RedisEntity   = entity.NewRedisEntity(rdb)
 	userService    services.UserService = services.NewUserService(userEntity)
-	jwtService     services.JWTService  = services.NewJWTService()
+	jwtService     services.JWTService  = services.NewJWTService(redisEntity)
 	userController                      = controller.NewUserController(userService, jwtService)
 )
 
@@ -28,13 +33,14 @@ func SetupRouter() *gin.Engine {
 	// Load .env file
 	errEnv := godotenv.Load()
 	if errEnv != nil {
-		panic("Failed to load env file")
+		log.Panic("Failed to load env file")
 	}
 
 	appPort := fmt.Sprintf(":%s", os.Getenv("APP_PORT"))
 
 	// Closing the database when the program stop
 	defer gorm_utils.Close(db)
+	defer redis_utils.Close(rdb)
 
 	// r := gin.New()
 	r := gin.Default()
