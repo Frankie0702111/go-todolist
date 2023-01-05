@@ -79,8 +79,8 @@ func (h *userController) Login(c *gin.Context) {
 	if v, ok := loginResult.(model.User); ok {
 		generatedToken := h.jwtService.GenerateToken(v.ID, time.Now().Add(time.Duration(jwtTTL)*time.Second))
 		if len(generatedToken) < 1 {
-			response := responses.ErrorsResponse(http.StatusBadRequest, "Failed to process request", "Signature failed", nil)
-			c.AbortWithStatusJSON(http.StatusBadRequest, response)
+			response := responses.ErrorsResponseByCode(http.StatusInternalServerError, "Failed to process request", responses.SignatureFailed, nil)
+			c.AbortWithStatusJSON(http.StatusInternalServerError, response)
 			return
 		}
 
@@ -91,7 +91,7 @@ func (h *userController) Login(c *gin.Context) {
 	}
 
 	// If the email and password is not valid
-	response := responses.ErrorsResponse(http.StatusUnauthorized, "Failed to process request", "Invalid credential", nil)
+	response := responses.ErrorsResponseByCode(http.StatusUnauthorized, "Failed to process request", responses.InvalidCredential, nil)
 	c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 	return
 }
@@ -114,8 +114,8 @@ func (h *userController) Register(c *gin.Context) {
 	// create new user
 	createdUser := h.userService.CreateUser(input)
 	if len(createdUser.Password) < 1 {
-		response := responses.ErrorsResponse(http.StatusBadRequest, "Failed to process request", "Failed to hash a password", nil)
-		c.AbortWithStatusJSON(http.StatusBadRequest, response)
+		response := responses.ErrorsResponseByCode(http.StatusInternalServerError, "Failed to process request", responses.FailedToHashAPassword, nil)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, response)
 		return
 	}
 
@@ -130,20 +130,10 @@ func (h *userController) Register(c *gin.Context) {
 func (h *userController) RefreshToken(c *gin.Context) {
 	var refreshToken model.RefreshToken
 	authHeader := ParseToken(c)
-	switch authHeader {
-	case "No token found":
-		fallthrough
-	case "Bearer token not in proper format":
-		response := responses.ErrorsResponse(http.StatusBadRequest, "Failed to process request", authHeader, nil)
-		c.AbortWithStatusJSON(http.StatusBadRequest, response)
-		return
-	}
-
-	// Refresh the token
 	token := h.jwtService.RefreshToken(authHeader)
 	if len(token) < 1 {
-		response := responses.ErrorsResponse(http.StatusBadRequest, "Failed to process request", "Token contains an invalid number of segments", nil)
-		c.AbortWithStatusJSON(http.StatusBadRequest, response)
+		response := responses.ErrorsResponseByCode(http.StatusUnauthorized, "Failed to process request", responses.TokenContainsAnInvalidNumberOfSegments, nil)
+		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 		return
 	}
 
@@ -162,8 +152,8 @@ func (h *userController) Logout(c *gin.Context) {
 		response := responses.SuccessResponse(http.StatusOK, "Successfully logged out", nil)
 		c.JSON(http.StatusOK, response)
 	} else {
-		response := responses.ErrorsResponse(http.StatusBadRequest, "Failed to process request", "Failed to logout", nil)
-		c.AbortWithStatusJSON(http.StatusBadRequest, response)
+		response := responses.ErrorsResponseByCode(http.StatusUnauthorized, "Failed to process request", responses.FailedToLogout, nil)
+		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 	}
 
 	return

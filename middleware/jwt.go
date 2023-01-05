@@ -17,12 +17,23 @@ import (
 func AuthorizeJWT(s services.JWTService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := controller.ParseToken(c)
+		switch authHeader {
+		case "No token found":
+			response := responses.ErrorsResponseByCode(http.StatusBadRequest, "Failed to process request", responses.NoTokenFound, nil)
+			c.AbortWithStatusJSON(http.StatusBadRequest, response)
+			return
+		case "Bearer token not in proper format":
+			response := responses.ErrorsResponseByCode(http.StatusBadRequest, "Failed to process request", responses.BearerTokenNotInProperFormat, nil)
+			c.AbortWithStatusJSON(http.StatusBadRequest, response)
+			return
+		}
 
 		// Validate the token
 		token, err := s.ValidateToken(authHeader)
 		if err != nil {
-			response := responses.ErrorsResponse(401, "Token is not valid", err.Error(), nil)
+			response := responses.ErrorsResponse(http.StatusUnauthorized, "Token is not valid", err.Error(), nil)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+			return
 		} else {
 			// Get the claims of the token
 			claims := token.Claims.(jwt.MapClaims)
@@ -35,10 +46,16 @@ func AuthorizeJWT(s services.JWTService) gin.HandlerFunc {
 		// whitelist for token
 		redisToken := s.AuthJWT(authHeader)
 		if len(redisToken) < 1 {
-			response := responses.ErrorsResponse(401, "Token is not valid", "Token does not exist or expired", nil)
+			response := responses.ErrorsResponseByCode(http.StatusUnauthorized, "Token is not valid", responses.TokenDoesNotExistOrExpired, nil)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+			return
 		}
 
-		return
+		// Check if the token is the same as redis
+		if authHeader != redisToken {
+			response := responses.ErrorsResponseByCode(http.StatusBadRequest, "Failed to process request", responses.TokenInvalid, nil)
+			c.AbortWithStatusJSON(http.StatusBadRequest, response)
+			return
+		}
 	}
 }
