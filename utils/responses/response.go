@@ -2,6 +2,17 @@ package responses
 
 import "strings"
 
+// Test - mapping of error messages
+// const (
+// 	Test = 999
+// )
+
+// var (
+// 	messages = map[int]string{
+// 		999: "Test123.",
+// 	}
+// )
+
 // Create a new struct for the response data
 type Response struct {
 	Code    int         `json:"code"`
@@ -11,8 +22,8 @@ type Response struct {
 }
 
 // EmptyObj object is used when data doesnt want to be null on json
-type EmptyObject struct {
-}
+// type EmptyObject struct {
+// }
 
 // SuccessResponse returns a success response with the given data
 func SuccessResponse(code int, message string, data interface{}) Response {

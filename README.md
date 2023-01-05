@@ -2,12 +2,14 @@
 這是一個簡單的待辦事項專案 <br>
 備註: <br>
 1. jwt-token TTL 時間預設 900 秒，中介層驗證 token TTL 成功時，計算該 token TTL 是否低於 5 分鐘，低於則重新給予一組新的 token。
-2. logout 僅回傳成功的資訊，須由前端開發者主動清除使用者 token 資訊 (未開發白名單或黑名單機制)。
+2. token 加入白名單機制，經由 redis 管理，使用者登出一併清除 redis token。
+3. 日誌輸出，預設採用日期分割檔案，如果需要按容量大小分割檔案請取消註解 `utils/log/logBySize.go`。
 
 It is a simple todo list project <br>
 Note: <br>
 1. jwt-token TTL time is preset to 900 seconds. When the middleware verifies the success of token TTL, it will calculate whether the token TTL is lower than 5 minutes, and if it is lower, a new set of token will be given again.
-2. The logout only returns successful information, and the front-end developer must take the initiative to clear the user token information (no whitelist or blacklist mechanism has been developed).
+2. The token is added to the whitelist mechanism, managed by redis, and the user logout to clear the redis token as well.
+3. Log output, default date split file, if you need to split the file by size please uncomment `utils/log/logBySize.go`.
 
 # Project plugins
 - [Gin](https://github.com/gin-gonic/gin)
@@ -17,6 +19,10 @@ Note: <br>
 - [crypto](https://pkg.go.dev/golang.org/x/crypto)
 - [smapping](https://github.com/mashingan/smapping)
 - [golang-jwt](https://github.com/golang-jwt/jwt)
+- [go-redis](https://github.com/go-redis/redis)
+- [zap](https://github.com/uber-go/zap)
+- [lumberjack](https://github.com/natefinch/lumberjack)
+- [file-rotatelogs](https://github.com/lestrrat-go/file-rotatelogs)
 
 # How to build
 ## Install migrate
@@ -45,7 +51,11 @@ go run main.go
 ├── controller
 │   └── userController.go
 ├── entity
+│   ├── redisEntity.go
 │   └── userEntity.go
+├── log
+│   ├── info.log
+│   └── error.log
 ├── middleware
 │   └── jwt.go
 ├── migration
@@ -63,6 +73,11 @@ go run main.go
 ├── utils
 │   ├── gorm
 │   │   └── gorm.go
+│   ├── log
+│   │   ├── logByDate.go
+│   │   └── logBySize.go
+│   ├── redis
+│   │   └── redis.go
 │   └── responses
 │       └── response.go
 ├── .env.example
@@ -82,6 +97,10 @@ go run main.go
 - Entity
 > 協助 service 調用 sql query <br>
 > Assist service in calling sql query
+
+- Log
+> 日誌檔位置 <br>
+> Location of logger files
 
 - Middleware
 > 中介層，負責過濾進入的資料 <br>

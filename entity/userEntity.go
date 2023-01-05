@@ -2,6 +2,7 @@ package entity
 
 import (
 	"go-todolist/model"
+	"go-todolist/utils/log"
 
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
@@ -35,7 +36,6 @@ func NewUserEntity(db *gorm.DB) UserEntity {
 func (db *userConnection) InsertUser(user model.User) model.User {
 	// hash password
 	user.Password = hashAndSalt([]byte(user.Password))
-
 	if len(user.Password) > 1 {
 		db.connection.Save(&user)
 	}
@@ -72,9 +72,9 @@ func (db *userConnection) VerifyCredential(email string) interface{} {
 func hashAndSalt(pwd []byte) string {
 	// hash password
 	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
-
 	if err != nil {
 		// if failed to hash password, return empty string
+		log.Error("Failed to hash a password")
 		return ""
 	}
 
