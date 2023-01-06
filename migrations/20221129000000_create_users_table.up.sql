@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `users`
   `updated_at`  timestamp     NOT NULL  DEFAULT NOW()   COMMENT '更新時間'
 );
 
-create index `idx_email` on `users` (`email`) using BTREE;
+create unique index `uidx_email` on `users` (`email`) using BTREE;
 create index `idx_created_at` on `users` (`created_at` desc) using BTREE;
 create index `idx_updated_at` on `users` (`updated_at` desc) using BTREE;
 
