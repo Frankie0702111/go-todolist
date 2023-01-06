@@ -64,15 +64,20 @@ func (s *userService) CreateUser(user request.RegisterRequest) model.User {
 		log.Error("Failed map : " + err.Error())
 	}
 
-	// insert user to db and return user model to caller function
-	res := s.userEntity.InsertUser(userToCreate)
+	findByEmail := s.userEntity.FindByEmail(user.Email)
 
-	// return user model to caller function
-	return res
+	if findByEmail.ID == 0 {
+		// insert user to db and return user model to caller function
+		res := s.userEntity.InsertUser(userToCreate)
+		// return user model to caller function
+		return res
+	}
+
+	return userToCreate
 }
 
 // func (s *userService) FindByEmail(email string) model.User {
-// if err = gorm.Db
+
 // }
 
 // comparePassword is compare password with hashed password and return true if password is matched or return false if password is not matched
