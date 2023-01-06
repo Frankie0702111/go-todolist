@@ -113,9 +113,10 @@ func (h *userController) Register(c *gin.Context) {
 	// if the email is valid and unique in the database then register the user
 	// create new user
 	createdUser := h.userService.CreateUser(input)
-	if len(createdUser.Password) < 1 {
-		response := responses.ErrorsResponseByCode(http.StatusInternalServerError, "Failed to process request", responses.FailedToHashAPassword, nil)
-		c.AbortWithStatusJSON(http.StatusInternalServerError, response)
+	// Check if then email exists
+	if createdUser.ID == 0 {
+		response := responses.ErrorsResponseByCode(http.StatusBadRequest, "Failed to process request", responses.EmailAlreadyExists, nil)
+		c.AbortWithStatusJSON(http.StatusBadRequest, response)
 		return
 	}
 

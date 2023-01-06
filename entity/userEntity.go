@@ -16,7 +16,8 @@ type UserEntity interface {
 	//VerifyCredential is verify user login
 	VerifyCredential(email string) interface{}
 
-	// FindByEmail(email string) model.User
+	// FindByEmail is find user by email
+	FindByEmail(email string) model.User
 }
 
 // userConnection is a struct that implements connection to db with gorm
@@ -61,12 +62,11 @@ func (db *userConnection) VerifyCredential(email string) interface{} {
 	return nil
 }
 
-// func (db *userConnection) FindByEmail(email string) model.User {
-// 	var user model.User
-// 	// db.connection.Where("email = ? AND password = ?", email, password).Take(&user)
-// 	db.connection.Where("email = ?", email).Take(&user)
-// 	return user
-// }
+func (db *userConnection) FindByEmail(email string) model.User {
+	var user model.User
+	db.connection.Where("email = ?", email).Take(&user)
+	return user
+}
 
 // hashAndSalt is hash password and return hashed password
 func hashAndSalt(pwd []byte) string {
@@ -74,7 +74,7 @@ func hashAndSalt(pwd []byte) string {
 	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
 	if err != nil {
 		// if failed to hash password, return empty string
-		log.Error("Failed to hash a password")
+		log.Error("Failed to hash password : " + err.Error())
 		return ""
 	}
 
