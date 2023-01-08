@@ -12,6 +12,7 @@ const (
 	InvalidCredential                      = 401002
 	TokenContainsAnInvalidNumberOfSegments = 401003
 	FailedToLogout                         = 401004
+	TooManyRequests                        = 429001
 
 	// 5xx
 	SignatureFailed = 500001
@@ -28,6 +29,7 @@ var (
 		401002: "Invalid credential.",
 		401003: "Token contains an invalid number of segments.",
 		401004: "Failed to logout.",
+		429001: "Too many requests.",
 
 		// 5xx
 		500001: "Signature failed.",

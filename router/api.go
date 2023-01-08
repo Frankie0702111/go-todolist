@@ -20,13 +20,14 @@ import (
 var (
 	v1 = "/api/v1"
 
-	db             *gorm.DB             = gorm_utils.InitMySQL()
-	rdb            *redis.Client        = redis_utils.InitRedis()
-	userEntity     entity.UserEntity    = entity.NewUserEntity(db)
-	redisEntity    entity.RedisEntity   = entity.NewRedisEntity(rdb)
-	userService    services.UserService = services.NewUserService(userEntity)
-	jwtService     services.JWTService  = services.NewJWTService(redisEntity)
-	userController                      = controller.NewUserController(userService, jwtService)
+	db                    *gorm.DB                         = gorm_utils.InitMySQL()
+	rdb                   *redis.Client                    = redis_utils.InitRedis()
+	userEntity            entity.UserEntity                = entity.NewUserEntity(db)
+	redisEntity           entity.RedisEntity               = entity.NewRedisEntity(rdb)
+	userService           services.UserService             = services.NewUserService(userEntity)
+	jwtService            services.JWTService              = services.NewJWTService(redisEntity)
+	userController                                         = controller.NewUserController(userService, jwtService)
+	rateLimiterMiddleware middleware.RateLimiterMiddleware = middleware.NewRateLimiterMiddleware(redisEntity)
 )
 
 func SetupRouter() *gin.Engine {
@@ -45,6 +46,8 @@ func SetupRouter() *gin.Engine {
 	// r := gin.New()
 	r := gin.Default()
 	r.SetTrustedProxies(nil)
+	// Set the IP rate limiter (limiter times, time)
+	r.Use(rateLimiterMiddleware.RateLimiter(100, 60))
 
 	authRoutes := r.Group(v1 + "/auth")
 	{

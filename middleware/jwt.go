@@ -13,7 +13,7 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-//AuthorizeJWT validates the token user given, return 401 if not valid
+// AuthorizeJWT validates the token user given, return 401 if not valid
 func AuthorizeJWT(s services.JWTService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := controller.ParseToken(c)
@@ -57,5 +57,7 @@ func AuthorizeJWT(s services.JWTService) gin.HandlerFunc {
 			c.AbortWithStatusJSON(http.StatusBadRequest, response)
 			return
 		}
+
+		c.Next()
 	}
 }
