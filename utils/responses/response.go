@@ -8,6 +8,8 @@ const (
 	BearerTokenNotInProperFormat           = 400002
 	TokenInvalid                           = 400003
 	EmailAlreadyExists                     = 400004
+	EmailNotExists                         = 400005
+	FailedToGetStateToken                  = 400006
 	TokenDoesNotExistOrExpired             = 401001
 	InvalidCredential                      = 401002
 	TokenContainsAnInvalidNumberOfSegments = 401003
@@ -25,6 +27,8 @@ var (
 		400002: "Bearer token not in proper format.",
 		400003: "Token invalid.",
 		400004: "Email already exists.",
+		400005: "Email not exists.",
+		400006: "Failed to get state token.",
 		401001: "Token does not exist or expired.",
 		401002: "Invalid credential.",
 		401003: "Token contains an invalid number of segments.",

@@ -3,6 +3,7 @@ package services
 import (
 	"fmt"
 	"go-todolist/entity"
+	"reflect"
 
 	"go-todolist/utils/log"
 	"os"
@@ -28,6 +29,8 @@ type JWTService interface {
 
 	// Authorize JWT for middleware
 	AuthJWT(authHeader string) string
+
+	GoogleGenerateToken(data interface{}) string
 }
 
 // jwtCustomClaim is a struct that contains the custom claims for the JWT
@@ -49,10 +52,11 @@ type jwtService struct {
 
 	// conntection to redis
 	redisEntity entity.RedisEntity
+	userEntity  entity.UserEntity
 }
 
 //NewJWTService method is creates a new instance of JWTService
-func NewJWTService(redisEntity entity.RedisEntity) JWTService {
+func NewJWTService(redisEntity entity.RedisEntity, userEntity entity.UserEntity) JWTService {
 	return &jwtService{
 		// Call the getSecretKey function to get the secret key
 		secretKey: getSecretKey(),
@@ -62,6 +66,7 @@ func NewJWTService(redisEntity entity.RedisEntity) JWTService {
 
 		// connection: rdb,
 		redisEntity: redisEntity,
+		userEntity:  userEntity,
 	}
 }
 
@@ -125,7 +130,7 @@ func (s *jwtService) GenerateToken(userID uint64, t time.Time) string {
 		return ""
 	}
 
-	_, setRedisErr := s.redisEntity.Set("token"+strconv.Itoa(int(userID)), token, time.Duration(jwtTTL)*time.Second)
+	_, setRedisErr := s.redisEntity.Set("token"+strconv.FormatUint(userID, 10), token, time.Duration(jwtTTL)*time.Second)
 	if setRedisErr != nil {
 		log.Error("Failed to set the token in redis : " + setRedisErr.Error())
 	}
@@ -202,4 +207,22 @@ func (s *jwtService) AuthJWT(authHeader string) string {
 	}
 
 	return fmt.Sprintf("%v", get)
+}
+
+func (s *jwtService) GoogleGenerateToken(data interface{}) string {
+	jwtTTL := GetTokenTTL()
+	// Test how to get interface values
+	googleInfo := reflect.ValueOf(data)
+
+	findByEmail := s.userEntity.FindByEmail(googleInfo.FieldByName("Email").String())
+	if findByEmail.ID == 0 {
+		return ""
+	}
+
+	fmt.Println("GoogleGenerateToken ID : ", googleInfo.FieldByName("Id").Uint())
+
+	token := s.GenerateToken(googleInfo.FieldByName("Id").Uint(), time.Now().Add(time.Duration(jwtTTL)*time.Second))
+	fmt.Println(googleInfo.FieldByName("Id"))
+
+	return token
 }

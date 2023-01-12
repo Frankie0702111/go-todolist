@@ -26,6 +26,6 @@ type User struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-type RefreshToken struct {
+type Token struct {
 	Token string `json:"token"`
 }
