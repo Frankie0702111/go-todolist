@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"go-todolist/entity"
+	"go-todolist/utils/log"
 	"go-todolist/utils/responses"
 	"net/http"
 	"time"
@@ -39,6 +40,8 @@ func (r *rateLimiterMiddleware) RateLimiter(limit int, expireAt int64) gin.Handl
 		r.redisEntity.IncrBy(ip, 1)
 		if getLimiter == 0 {
 			r.redisEntity.ExpireAt(ip, time.Unix(now+expireAt, 0))
+			log.Info("Client IP : " + ip + ", path : " + c.FullPath())
+			log.Info("X-Real-IP : " + c.GetHeader("X-Real-IP") + ", X-Forwarded-For : " + c.GetHeader("X-Forwarded-For") + ", RemoteIP : " + c.RemoteIP())
 		}
 
 		c.Next()

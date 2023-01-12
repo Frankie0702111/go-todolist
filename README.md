@@ -23,6 +23,8 @@ Note: <br>
 - [zap](https://github.com/uber-go/zap)
 - [lumberjack](https://github.com/natefinch/lumberjack)
 - [file-rotatelogs](https://github.com/lestrrat-go/file-rotatelogs)
+- [oauth2](https://github.com/golang/oauth2)
+- [gjson](https://github.com/tidwall/gjson)
 
 # How to build
 ## Install migrate
@@ -49,6 +51,7 @@ go run main.go
 # Folders structure
 ```
 ├── controller
+│   ├── googleOauthController.go
 │   └── userController.go
 ├── entity
 │   ├── redisEntity.go
@@ -57,7 +60,9 @@ go run main.go
 │   ├── info.log
 │   └── error.log
 ├── middleware
-│   └── jwt.go
+│   ├── cors.go
+│   ├── jwt.go
+│   └── rateLimiter.go
 ├── migration
 │   ├── 20221129000000_create_users_table.down.sql
 │   └── 20221129000000_create_users_table.up.sql

@@ -129,7 +129,7 @@ func (h *userController) Register(c *gin.Context) {
 
 // RefreshToken is a function for token refresh
 func (h *userController) RefreshToken(c *gin.Context) {
-	var refreshToken model.RefreshToken
+	var refreshToken model.Token
 	authHeader := ParseToken(c)
 	token := h.jwtService.RefreshToken(authHeader)
 	if len(token) < 1 {
