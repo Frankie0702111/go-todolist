@@ -84,7 +84,7 @@ func (h *googleOauthController) GoogleCallBack(c *gin.Context) {
 		return
 	}
 
-	data := GoogleInfo{
+	data := &GoogleInfo{
 		Id:    gjson.GetBytes(content, "id").Uint(),
 		Email: gjson.GetBytes(content, "email").String(),
 	}
