@@ -211,18 +211,12 @@ func (s *jwtService) AuthJWT(authHeader string) string {
 
 func (s *jwtService) GoogleGenerateToken(data interface{}) string {
 	jwtTTL := GetTokenTTL()
-	// Test how to get interface values
-	googleInfo := reflect.ValueOf(data)
-
+	googleInfo := reflect.ValueOf(data).Elem()
 	findByEmail := s.userEntity.FindByEmail(googleInfo.FieldByName("Email").String())
 	if findByEmail.ID == 0 {
 		return ""
 	}
 
-	fmt.Println("GoogleGenerateToken ID : ", googleInfo.FieldByName("Id").Uint())
-
 	token := s.GenerateToken(googleInfo.FieldByName("Id").Uint(), time.Now().Add(time.Duration(jwtTTL)*time.Second))
-	fmt.Println(googleInfo.FieldByName("Id"))
-
 	return token
 }
