@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"go-todolist/model"
 	"go-todolist/services"
 	"go-todolist/utils/responses"
@@ -47,7 +46,7 @@ func GoogleLogin(c *gin.Context) {
 	googleOAuthConfig.ClientID = os.Getenv("GOOGLE_OAUTH_CLIENT_ID")
 
 	url := googleOAuthConfig.AuthCodeURL(googleState)
-	fmt.Println(url)
+	// fmt.Println(url)
 	c.Redirect(http.StatusSeeOther, url)
 }
 
@@ -97,7 +96,7 @@ func (h *googleOauthController) GoogleCallBack(c *gin.Context) {
 	}
 	responseToken.Token = generatorToken
 
-	response := responses.SuccessResponse(http.StatusOK, "Google access success", generatorToken)
+	response := responses.SuccessResponse(http.StatusOK, "Google access success", responseToken)
 	c.AbortWithStatusJSON(http.StatusOK, response)
 	return
 }
