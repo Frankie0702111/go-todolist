@@ -48,6 +48,15 @@ type Response struct {
 	Data    interface{} `json:"data"`
 }
 
+// Create a new struct for the page response data
+type PageResponse struct {
+	CurrentPage int64       `json:"currentPage"`
+	PageSize    int64       `json:"pageSize"`
+	Total       int64       `json:"total"` // Data count
+	Pages       int64       `json:"pages"` // Total page
+	Data        interface{} `json:"data"`
+}
+
 // EmptyObj object is used when data doesnt want to be null on json
 // type EmptyObject struct {
 // }
