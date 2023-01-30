@@ -54,8 +54,10 @@ migrate -database "mysql://root:@tcp(127.0.0.1:3306)/go-todolist" -path ./migrat
 go run main.go
 ```
 
-# Folders structure
+# Folder structure
 ```
+├── LICENSE
+├── README.md
 ├── controller
 │   ├── categoryController.go
 │   ├── googleOauthController.go
@@ -64,14 +66,25 @@ go run main.go
 │   ├── categoryEntity.go
 │   ├── redisEntity.go
 │   └── userEntity.go
+├── go.mod
+├── go.sum
 ├── log
-│   ├── info.log
-│   └── error.log
+│   ├── error-20230123.log
+│   ├── error.log -> error-20230123.log
+│   ├── info-20230118.log
+│   ├── info-20230119.log
+│   ├── info-20230123.log
+│   ├── info-20230124.log
+│   ├── info-20230125.log
+│   ├── info-20230129.log
+│   ├── info-20230130.log
+│   └── info.log -> info-20230130.log
+├── main.go
 ├── middleware
 │   ├── cors.go
 │   ├── jwt.go
 │   └── rateLimiter.go
-├── migration
+├── migrations
 │   ├── 20221129000000_create_users_table.down.sql
 │   ├── 20221129000000_create_users_table.up.sql
 │   ├── 20221129000001_create_categories_table.down.sql
@@ -92,25 +105,21 @@ go run main.go
 ├── services
 │   ├── jwtService.go
 │   └── userService.go
-├── utils
-│   ├── gorm
-│   │   └── gorm.go
-│   ├── log
-│   │   ├── logByDate.go
-│   │   └── logBySize.go
-│   ├── paginator
-│   │   └── paginator.go
-│   ├── redis
-│   │   └── redis.go
-│   └── responses
-│       └── response.go
-├── .env.example
-├── .gitignore
-├── go.mod
-├── go.sum
-├── LICENSE
-├── main.go
-└── README.md
+├── tmp
+│   ├── build-errors.log
+│   └── main
+└── utils
+    ├── gorm
+    │   ├── gorm.go
+    ├── log
+    │   ├── logByDate.go
+    │   └── logBySize.go
+    ├── paginator
+    │   └── paginator.go
+    ├── redis
+    │   └── redis.go
+    └── responses
+        └── response.go
 ```
 
 # Folder definition
