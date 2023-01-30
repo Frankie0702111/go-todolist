@@ -23,10 +23,12 @@ var (
 	db                    *gorm.DB                         = gorm_utils.InitMySQL()
 	rdb                   *redis.Client                    = redis_utils.InitRedis()
 	userEntity            entity.UserEntity                = entity.NewUserEntity(db)
+	categoryEntity        entity.CategoryEntity            = entity.NewCategoryEntity(db)
 	redisEntity           entity.RedisEntity               = entity.NewRedisEntity(rdb)
 	userService           services.UserService             = services.NewUserService(userEntity)
 	jwtService            services.JWTService              = services.NewJWTService(redisEntity, userEntity)
 	userController                                         = controller.NewUserController(userService, jwtService)
+	categoryController                                     = controller.NewCategoryController(categoryEntity)
 	googleOauthController                                  = controller.NewGoogleOauthController(jwtService)
 	rateLimiterMiddleware middleware.RateLimiterMiddleware = middleware.NewRateLimiterMiddleware(redisEntity)
 )
@@ -77,6 +79,11 @@ func SetupRouter() *gin.Engine {
 	{
 		auth.POST("refresh", userController.RefreshToken)
 		auth.POST("logout", userController.Logout)
+	}
+
+	categories := r.Group(v1+"/category", middleware.AuthorizeJWT(jwtService))
+	{
+		categories.GET("/", categoryController.GetByList)
 	}
 
 	err := r.Run(appPort)

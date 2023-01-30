@@ -41,6 +41,12 @@ migrate -database "mysql://root:@tcp(127.0.0.1:3306)/go-todolist" -path ./migrat
 # Down migration
 # migrate -database "mysql://{user}:{password}@tcp({host}:{port})/{project name}" -path ./migrations down
 migrate -database "mysql://root:@tcp(127.0.0.1:3306)/go-todolist" -path ./migrations down
+
+# Specify batch up or down (If you want to go down to a specific file, it is recommended to open a new folder)
+# migrate -database "mysql://{user}:{password}@tcp({host}:{port})/{project name}" -path ./migrations up {number}
+migrate -database "mysql://root:@tcp(127.0.0.1:3306)/go-todolist" -path ./migrations up 1
+# migrate -database "mysql://{user}:{password}@tcp({host}:{port})/{project name}" -path ./migrations down {number}
+migrate -database "mysql://root:@tcp(127.0.0.1:3306)/go-todolist" -path ./migrations down 1
 ```
 
 ## Run go
@@ -51,9 +57,11 @@ go run main.go
 # Folders structure
 ```
 ├── controller
+│   ├── categoryController.go
 │   ├── googleOauthController.go
 │   └── userController.go
 ├── entity
+│   ├── categoryEntity.go
 │   ├── redisEntity.go
 │   └── userEntity.go
 ├── log
@@ -65,10 +73,19 @@ go run main.go
 │   └── rateLimiter.go
 ├── migration
 │   ├── 20221129000000_create_users_table.down.sql
-│   └── 20221129000000_create_users_table.up.sql
+│   ├── 20221129000000_create_users_table.up.sql
+│   ├── 20221129000001_create_categories_table.down.sql
+│   ├── 20221129000001_create_categories_table.up.sql
+│   ├── 20221129000002_create_tasks_table.down.sql
+│   ├── 20221129000002_create_tasks_table.up.sql
+│   ├── 20221129000003_create_category_task_table.down.sql
+│   └── 20221129000003_create_category_task_table.up.sql
 ├── model
+│   ├── category.go
 │   └── user.go
 ├── request
+│   ├── categoryRequest.go
+│   ├── publicRequest.go
 │   └── userRequest.go
 ├── router
 │   └── api.go
@@ -81,6 +98,8 @@ go run main.go
 │   ├── log
 │   │   ├── logByDate.go
 │   │   └── logBySize.go
+│   ├── paginator
+│   │   └── paginator.go
 │   ├── redis
 │   │   └── redis.go
 │   └── responses
