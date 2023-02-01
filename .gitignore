@@ -20,5 +20,4 @@ vendor/
 tmp/
 
 # Error log
-log/*.log
-log/*.gz
+log/*.*

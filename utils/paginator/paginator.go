@@ -9,8 +9,8 @@ import (
 type Page[T any] struct {
 	CurrentPage int64 `json:"currentPage"`
 	PageLimit   int64 `json:"pageLimit"`
-	Total       int64 `json:"total"`
-	Pages       int64 `json:"pages"`
+	Total       int64 `json:"total"` // Data count
+	Pages       int64 `json:"pages"` // Total page
 	Data        []T   `json:"data"`
 }
 
