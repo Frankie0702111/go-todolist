@@ -50,10 +50,13 @@ type Response struct {
 
 // Create a new struct for the page response data
 type PageResponse struct {
+	Code        int         `json:"code"`
+	Message     string      `json:"message"`
 	CurrentPage int64       `json:"currentPage"`
-	PageSize    int64       `json:"pageSize"`
+	PageLimit   int64       `json:"pageLimit"`
 	Total       int64       `json:"total"` // Data count
 	Pages       int64       `json:"pages"` // Total page
+	Errors      interface{} `json:"errors"`
 	Data        interface{} `json:"data"`
 }
 
@@ -68,6 +71,19 @@ func SuccessResponse(code int, message string, data interface{}) Response {
 		Message: message,
 		Errors:  nil,
 		Data:    data,
+	}
+}
+
+func SuccessPageResponse(code int, message string, currentPage int64, pageLimit int64, total int64, pages int64, data interface{}) PageResponse {
+	return PageResponse{
+		Code:        code,
+		Message:     message,
+		CurrentPage: currentPage,
+		PageLimit:   pageLimit,
+		Total:       total,
+		Pages:       pages,
+		Errors:      nil,
+		Data:        data,
 	}
 }
 

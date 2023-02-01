@@ -3,7 +3,6 @@ package entity
 import (
 	"go-todolist/model"
 	"go-todolist/utils/paginator"
-	"go-todolist/utils/responses"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -11,7 +10,7 @@ import (
 
 type CategoryEntity interface {
 	// GetCategoryList(id int, name string) (categories []*model.Category)
-	GetCategoryList(id int, name string, page int64, limit int64) *responses.PageResponse
+	GetCategoryList(id int, name string, page int64, limit int64) paginator.Page[model.Category]
 }
 
 type categoryConnection struct {
@@ -24,7 +23,7 @@ func NewCategoryEntity(db *gorm.DB) CategoryEntity {
 	}
 }
 
-func (db *categoryConnection) GetCategoryList(id int, name string, page int64, limit int64) *responses.PageResponse {
+func (db *categoryConnection) GetCategoryList(id int, name string, page int64, limit int64) paginator.Page[model.Category] {
 	// query := db.connection.Model(&categories).Preload(clause.Associations)
 	// if len(name) > 0 {
 	// 	query.Where("name = ?", name)
@@ -50,11 +49,5 @@ func (db *categoryConnection) GetCategoryList(id int, name string, page int64, l
 	p := paginator.Page[model.Category]{CurrentPage: page, PageLimit: limit}
 	p.SelectPages(query)
 
-	return &responses.PageResponse{
-		CurrentPage: p.CurrentPage,
-		PageSize:    p.Pages,
-		Pages:       p.Pages,
-		Total:       p.Total,
-		Data:        p.Data,
-	}
+	return p
 }

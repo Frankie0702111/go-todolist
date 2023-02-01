@@ -33,7 +33,7 @@ func (h *categoryController) GetByList(c *gin.Context) {
 	}
 
 	category := h.categoryEntity.GetCategoryList(input.Id, input.Name, input.Page, input.Limit)
-	response := responses.SuccessResponse(http.StatusOK, "Successfully get category list", category)
+	response := responses.SuccessPageResponse(http.StatusOK, "Successfully get category list", category.CurrentPage, category.PageLimit, category.Total, category.Pages, category.Data)
 	c.JSON(http.StatusOK, response)
 	return
 }
