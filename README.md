@@ -59,65 +59,56 @@ go run main.go
 ├── LICENSE
 ├── README.md
 ├── controller
-│   ├── categoryController.go
-│   ├── googleOauthController.go
-│   └── userController.go
+│   ├── categoryController.go
+│   ├── googleOauthController.go
+│   └── userController.go
 ├── entity
-│   ├── categoryEntity.go
-│   ├── redisEntity.go
-│   └── userEntity.go
+│   ├── categoryEntity.go
+│   ├── redisEntity.go
+│   └── userEntity.go
 ├── go.mod
 ├── go.sum
 ├── log
-│   ├── error-20230123.log
-│   ├── error.log -> error-20230123.log
-│   ├── info-20230118.log
-│   ├── info-20230119.log
-│   ├── info-20230123.log
-│   ├── info-20230124.log
-│   ├── info-20230125.log
-│   ├── info-20230129.log
-│   ├── info-20230130.log
-│   └── info.log -> info-20230130.log
 ├── main.go
 ├── middleware
-│   ├── cors.go
-│   ├── jwt.go
-│   └── rateLimiter.go
+│   ├── cors.go
+│   ├── jwt.go
+│   └── rateLimiter.go
 ├── migrations
-│   ├── 20221129000000_create_users_table.down.sql
-│   ├── 20221129000000_create_users_table.up.sql
-│   ├── 20221129000001_create_categories_table.down.sql
-│   ├── 20221129000001_create_categories_table.up.sql
-│   ├── 20221129000002_create_tasks_table.down.sql
-│   ├── 20221129000002_create_tasks_table.up.sql
-│   ├── 20221129000003_create_category_task_table.down.sql
-│   └── 20221129000003_create_category_task_table.up.sql
+│   ├── 20221129000000_create_users_table.down.sql
+│   ├── 20221129000000_create_users_table.up.sql
+│   ├── 20221129000001_create_categories_table.down.sql
+│   ├── 20221129000001_create_categories_table.up.sql
+│   ├── 20221129000002_create_tasks_table.down.sql
+│   ├── 20221129000002_create_tasks_table.up.sql
+│   ├── 20221129000003_create_category_task_table.down.sql
+│   └── 20221129000003_create_category_task_table.up.sql
 ├── model
-│   ├── category.go
-│   └── user.go
+│   ├── category.go
+│   └── user.go
 ├── request
-│   ├── categoryRequest.go
-│   ├── publicRequest.go
-│   └── userRequest.go
+│   ├── categoryRequest.go
+│   ├── publicRequest.go
+│   └── userRequest.go
 ├── router
-│   └── api.go
+│   └── api.go
 ├── services
-│   ├── jwtService.go
-│   └── userService.go
+│   ├── categoryService.go
+│   ├── jwtService.go
+│   └── userService.go
 ├── tmp
-│   ├── build-errors.log
-│   └── main
+│   ├── build-errors.log
+│   └── main
 └── utils
     ├── gorm
-    │   ├── gorm.go
+    │   └── gorm.go
     ├── log
-    │   ├── logByDate.go
-    │   └── logBySize.go
+    │   ├── logByDate.go
+    │   └── logBySize.go
     ├── paginator
-    │   └── paginator.go
+    │   └── paginator.go
     ├── redis
-    │   └── redis.go
+    │   └── redis.go
     └── responses
         └── response.go
 ```
