@@ -9,8 +9,12 @@ import (
 )
 
 type CategoryEntity interface {
+	CreateCategory(category model.Category) (c model.Category, e error)
 	// GetCategoryList(id int, name string) (categories []*model.Category)
 	GetCategoryList(id int, name string, page int64, limit int64) paginator.Page[model.Category]
+	GetCategory(id int) (res model.Category, err error)
+	UpdateCategory(category model.Category) (c model.Category, e error)
+	DeleteCategory(id int64) (c model.Category, e error)
 }
 
 type categoryConnection struct {
@@ -21,6 +25,15 @@ func NewCategoryEntity(db *gorm.DB) CategoryEntity {
 	return &categoryConnection{
 		connection: db,
 	}
+}
+
+func (db *categoryConnection) CreateCategory(category model.Category) (c model.Category, e error) {
+	create := db.connection.Save(&category)
+	if create.Error != nil {
+		return category, create.Error
+	}
+
+	return category, nil
 }
 
 func (db *categoryConnection) GetCategoryList(id int, name string, page int64, limit int64) paginator.Page[model.Category] {
@@ -50,4 +63,32 @@ func (db *categoryConnection) GetCategoryList(id int, name string, page int64, l
 	p.SelectPages(query)
 
 	return p
+}
+
+func (db *categoryConnection) GetCategory(id int) (category model.Category, err error) {
+	res := db.connection.First(&category, "id=?", id)
+	if res.Error == nil {
+		return category, nil
+	}
+
+	return category, err
+}
+
+func (db *categoryConnection) UpdateCategory(category model.Category) (c model.Category, e error) {
+	update := db.connection.Where("id = ?", category.ID).Updates(&category)
+	if update.Error != nil {
+		return category, update.Error
+	}
+
+	return category, nil
+}
+
+func (db *categoryConnection) DeleteCategory(id int64) (c model.Category, e error) {
+	category := model.Category{}
+	delete := db.connection.Delete(&category, id)
+	if delete.Error != nil {
+		return category, delete.Error
+	}
+
+	return category, nil
 }

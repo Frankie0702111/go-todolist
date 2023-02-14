@@ -26,9 +26,10 @@ var (
 	categoryEntity        entity.CategoryEntity            = entity.NewCategoryEntity(db)
 	redisEntity           entity.RedisEntity               = entity.NewRedisEntity(rdb)
 	userService           services.UserService             = services.NewUserService(userEntity)
+	categoryService       services.CategoryService         = services.NewCategoryService(categoryEntity)
 	jwtService            services.JWTService              = services.NewJWTService(redisEntity, userEntity)
 	userController                                         = controller.NewUserController(userService, jwtService)
-	categoryController                                     = controller.NewCategoryController(categoryEntity)
+	categoryController                                     = controller.NewCategoryController(categoryService, categoryEntity)
 	googleOauthController                                  = controller.NewGoogleOauthController(jwtService)
 	rateLimiterMiddleware middleware.RateLimiterMiddleware = middleware.NewRateLimiterMiddleware(redisEntity)
 )
@@ -83,7 +84,11 @@ func SetupRouter() *gin.Engine {
 
 	categories := r.Group(v1+"/category", middleware.AuthorizeJWT(jwtService))
 	{
+		categories.POST("/", categoryController.Create)
 		categories.GET("/", categoryController.GetByList)
+		categories.GET("/:id", categoryController.Get)
+		categories.PATCH("/:id", categoryController.Update)
+		categories.DELETE("/:id", categoryController.Delete)
 	}
 
 	err := r.Run(appPort)

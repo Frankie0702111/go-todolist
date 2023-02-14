@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS `tasks` (
-  `id`            int           NOT NULL  AUTO_INCREMENT  PRIMARY KEY,
-  `user_id`       int           NOT NULL,
+  `id`            bigint        NOT NULL  AUTO_INCREMENT  PRIMARY KEY,
+  `user_id`       bigint        NOT NULL,
   `title`         varchar(255)  NOT NULL  DEFAULT ''      COMMENT '標題',
   `note`          text          NULL      COMMENT '備註',
   `url`           text          NULL      COMMENT '網址',
