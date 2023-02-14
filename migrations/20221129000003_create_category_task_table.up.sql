@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS `category_task` (
-  `id`          int NOT NULL AUTO_INCREMENT  PRIMARY KEY,
-  `task_id`     int NOT NULL,
-  `category_id` int NOT NULL,
+  `id`          bigint  NOT NULL AUTO_INCREMENT  PRIMARY KEY,
+  `task_id`     bigint  NOT NULL,
+  `category_id` bigint  NOT NULL,
   `created_at`  timestamp     NOT NULL  DEFAULT NOW()   COMMENT '新增時間',
   `updated_at`  timestamp     NOT NULL  DEFAULT NOW()   COMMENT '更新時間'
 );

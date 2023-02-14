@@ -6,3 +6,7 @@ type Pagination struct {
 	// 筆數(請從1開始帶入)
 	Limit int64 `form:"limit" json:"limit" binding:"required,gt=0"`
 }
+
+type TableID struct {
+	Id int `uri:"id" binding:"required"`
+}

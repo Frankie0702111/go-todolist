@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS `users`
 (
-  `id`          int           NOT NULL  AUTO_INCREMENT  PRIMARY KEY,
+  `id`          bigint        NOT NULL  AUTO_INCREMENT  PRIMARY KEY,
   `username`    varchar(30)   NOT NULL  DEFAULT ''      COMMENT '用戶名',
   `email`       varchar(50)   NOT NULL  DEFAULT ''      COMMENT '信箱',
   `password`    varchar(255)  NOT NULL  DEFAULT ''      COMMENT '密碼',

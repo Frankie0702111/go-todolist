@@ -10,10 +10,12 @@ const (
 	EmailAlreadyExists                     = 400004
 	EmailNotExists                         = 400005
 	FailedToGetStateToken                  = 400006
+	IdInvalid                              = 400007
 	TokenDoesNotExistOrExpired             = 401001
 	InvalidCredential                      = 401002
 	TokenContainsAnInvalidNumberOfSegments = 401003
 	FailedToLogout                         = 401004
+	RecordNotFound                         = 401005
 	TooManyRequests                        = 429001
 
 	// 5xx
@@ -29,10 +31,12 @@ var (
 		400004: "Email already exists.",
 		400005: "Email not exists.",
 		400006: "Failed to get state token.",
+		400007: "ID Invalid.",
 		401001: "Token does not exist or expired.",
 		401002: "Invalid credential.",
 		401003: "Token contains an invalid number of segments.",
 		401004: "Failed to logout.",
+		401005: "Record not found.",
 		429001: "Too many requests.",
 
 		// 5xx
