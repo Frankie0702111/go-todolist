@@ -11,6 +11,24 @@ Note: <br>
 2. The token is added to the whitelist mechanism, managed by redis, and the user logout to clear the redis token as well.
 3. Log output, default date split file, if you need to split the file by size please uncomment `utils/log/logBySize.go`.
 
+# Contents
+ - [Software requirements](#Software requirements)
+ - [Project plugins](#Project plugins)
+ - [How to build project](#How to build project)
+ - [Folder structure](#Folder structure)
+ - [Folder definition](#Folder definition)
+
+# Software requirement
+ - **Database**
+    - [MySQL](https://dev.mysql.com/downloads/mysql/): v8.0
+    - [Redis](https://redis.io/download/): v6.2
+ - **Programming language**
+    - [Go](https://go.dev/dl/): v1.19
+ - **Deveops**
+    - [Docker GUI](https://www.docker.com/products/docker-desktop/)
+ - **Other**
+    - [Postman](https://www.postman.com/downloads/)
+ 
 # Project plugins
 - [Gin](https://github.com/gin-gonic/gin)
 - [GORM](https://github.com/go-gorm/gorm)
@@ -26,42 +44,61 @@ Note: <br>
 - [oauth2](https://github.com/golang/oauth2)
 - [gjson](https://github.com/tidwall/gjson)
 
-# How to build
-## Install migrate
-> https://github.com/golang-migrate/migrate/tree/master/cmd/migrate
-
-## Generate vendor and migrations
+# How to build project
+## 1.Clone GitHub project to local
 ```bash
-go mod vendor
-
-# Up migration
-# migrate -database "mysql://{user}:{password}@tcp({host}:{port})/{project name}" -path ./migrations up
-migrate -database "mysql://root:@tcp(127.0.0.1:3306)/go-todolist" -path ./migrations up
-
-# Down migration
-# migrate -database "mysql://{user}:{password}@tcp({host}:{port})/{project name}" -path ./migrations down
-migrate -database "mysql://root:@tcp(127.0.0.1:3306)/go-todolist" -path ./migrations down
-
-# Specify batch up or down (If you want to go down to a specific file, it is recommended to open a new folder)
-# migrate -database "mysql://{user}:{password}@tcp({host}:{port})/{project name}" -path ./migrations up {number}
-migrate -database "mysql://root:@tcp(127.0.0.1:3306)/go-todolist" -path ./migrations up 1
-# migrate -database "mysql://{user}:{password}@tcp({host}:{port})/{project name}" -path ./migrations down {number}
-migrate -database "mysql://root:@tcp(127.0.0.1:3306)/go-todolist" -path ./migrations down 1
+git clone https://github.com/Frankie0702111/go-todolist.git
 ```
 
-## Run go
+## 2.Generate .env and set up environment
 ```bash
-go run main.go
+cd go-todolist
+cp .env.example .env
+
+# Set up basic information, such as database, Google Oauth, JWT
+vim .env
+```
+
+## 3.Build docker image and start
+```bash
+cd go-todolist
+
+# Create docker image
+docker compose build --no-cache
+
+# Run docker
+docker compose up -d
+
+# Stop docker
+docker compose stop
+```
+
+## 4.Generate db migrations
+```bash
+cd go-todolist
+
+# Up migration
+make migrate-up
+
+# Down migration
+make migrate-down
+
+# Specify batch up or down (If you want to go down to a specific file, it is recommended to open a new folder)
+make migrate-up number=1
+make migrate-down number=1
 ```
 
 # Folder structure
 ```
+├── Dockerfile
 ├── LICENSE
+├── Makefile
 ├── README.md
 ├── controller
 │   ├── categoryController.go
 │   ├── googleOauthController.go
 │   └── userController.go
+├── docker-compose.yaml
 ├── entity
 │   ├── categoryEntity.go
 │   ├── redisEntity.go
