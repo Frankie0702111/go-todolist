@@ -39,5 +39,10 @@ services:
   redis:
     container_name: "${PROJECT_NAME}-redis"
     image: redis:6.2
+    ports:
+      - target: 6379
+        published: ${REDIS_PORT:-6379}
+        protocol: tcp
+        mode: host
 volumes:
   db-store:
