@@ -12,11 +12,11 @@ Note: <br>
 3. Log output, default date split file, if you need to split the file by size please uncomment `utils/log/logBySize.go`.
 
 # Contents
- - [Software requirements](#software requirements)
- - [Project plugins](#project plugins)
- - [How to build project](#how to build project)
- - [Folder structure](#folder structure)
- - [Folder definition](#folder definition)
+ - [Software requirements](#software-requirements)
+ - [Project plugins](#project-plugins)
+ - [How to build project](#how-to-build-project)
+ - [Folder structure](#folder-structure)
+ - [Folder definition](#folder-definition)
 
 # Software requirement
  - **Database**
