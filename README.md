@@ -43,6 +43,8 @@ Note: <br>
 - [file-rotatelogs](https://github.com/lestrrat-go/file-rotatelogs)
 - [oauth2](https://github.com/golang/oauth2)
 - [gjson](https://github.com/tidwall/gjson)
+- [aws sdk for go v2](https://pkg.go.dev/github.com/aws/aws-sdk-go-v2)
+- [uuid](https://github.com/gofrs/uuid)
 
 # How to build project
 ## 1.Clone GitHub project to local
@@ -97,11 +99,14 @@ make migrate-down number=1
 ├── controller
 │   ├── categoryController.go
 │   ├── googleOauthController.go
+│   ├── taskController.go
 │   └── userController.go
 ├── docker-compose.yaml
 ├── entity
 │   ├── categoryEntity.go
 │   ├── redisEntity.go
+│   ├── s3Entity.go
+│   ├── taskEntity.go
 │   └── userEntity.go
 ├── go.mod
 ├── go.sum
@@ -117,26 +122,28 @@ make migrate-down number=1
 │   ├── 20221129000001_create_categories_table.down.sql
 │   ├── 20221129000001_create_categories_table.up.sql
 │   ├── 20221129000002_create_tasks_table.down.sql
-│   ├── 20221129000002_create_tasks_table.up.sql
-│   ├── 20221129000003_create_category_task_table.down.sql
-│   └── 20221129000003_create_category_task_table.up.sql
+│   └── 20221129000002_create_tasks_table.up.sql
 ├── model
 │   ├── category.go
+│   ├── task.go
 │   └── user.go
 ├── request
 │   ├── categoryRequest.go
 │   ├── publicRequest.go
+│   ├── taskRequest.go
 │   └── userRequest.go
 ├── router
 │   └── api.go
 ├── services
 │   ├── categoryService.go
 │   ├── jwtService.go
+│   ├── taskService.go
 │   └── userService.go
-├── tmp
-│   ├── build-errors.log
-│   └── main
 └── utils
+    ├── aws
+    │   └── s3.go
+    ├── civilDatetime
+    │   └── civilDatetime.go
     ├── gorm
     │   └── gorm.go
     ├── log

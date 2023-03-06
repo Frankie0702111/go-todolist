@@ -6,11 +6,13 @@ import (
 	"go-todolist/entity"
 	"go-todolist/middleware"
 	"go-todolist/services"
+	s3_utils "go-todolist/utils/aws"
 	gorm_utils "go-todolist/utils/gorm"
 	"go-todolist/utils/log"
 	redis_utils "go-todolist/utils/redis"
 	"os"
 
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis/v8"
 	"github.com/joho/godotenv"
@@ -22,14 +24,19 @@ var (
 
 	db                    *gorm.DB                         = gorm_utils.InitMySQL()
 	rdb                   *redis.Client                    = redis_utils.InitRedis()
+	awsS3                 *s3.Client                       = s3_utils.InitS3()
 	userEntity            entity.UserEntity                = entity.NewUserEntity(db)
 	categoryEntity        entity.CategoryEntity            = entity.NewCategoryEntity(db)
+	taskEntity            entity.TaskEntity                = entity.NewTaskEntity(db)
 	redisEntity           entity.RedisEntity               = entity.NewRedisEntity(rdb)
+	s3Entity              entity.S3Entity                  = entity.NewS3Entity(awsS3)
 	userService           services.UserService             = services.NewUserService(userEntity)
 	categoryService       services.CategoryService         = services.NewCategoryService(categoryEntity)
+	taskService           services.TaskService             = services.NewTaskService(taskEntity, s3Entity)
 	jwtService            services.JWTService              = services.NewJWTService(redisEntity, userEntity)
 	userController                                         = controller.NewUserController(userService, jwtService)
 	categoryController                                     = controller.NewCategoryController(categoryService, categoryEntity)
+	taskController                                         = controller.NewTaskController(taskService, taskEntity)
 	googleOauthController                                  = controller.NewGoogleOauthController(jwtService)
 	rateLimiterMiddleware middleware.RateLimiterMiddleware = middleware.NewRateLimiterMiddleware(redisEntity)
 )
@@ -49,10 +56,12 @@ func SetupRouter() *gin.Engine {
 
 	// r := gin.New()
 	r := gin.Default()
+	// r.Use(middleware.CORS())
+
 	// IPv6 0:0:0:0:0:0:0:1 = ::1 (Omit 0) = 0.0.0.0/0
 	r.SetTrustedProxies([]string{"::1", "192.168.0.0/16", "172.16.0.0/12", "127.0.0.1/8", "10.0.0.0/8", "0.0.0.0/0"})
+
 	// Set the IP rate limiter (limiter times, time)
-	// r.Use(middleware.CORS())
 	r.Use(rateLimiterMiddleware.RateLimiter(100, 60))
 
 	authRoutes := r.Group(v1 + "/auth")
@@ -89,6 +98,15 @@ func SetupRouter() *gin.Engine {
 		categories.GET("/:id", categoryController.Get)
 		categories.PATCH("/:id", categoryController.Update)
 		categories.DELETE("/:id", categoryController.Delete)
+	}
+
+	tasks := r.Group(v1+"/task", middleware.AuthorizeJWT(jwtService))
+	{
+		tasks.POST("/", taskController.Create)
+		tasks.GET("/", taskController.GetByList)
+		tasks.GET("/:id", taskController.Get)
+		tasks.PATCH("/:id", taskController.Update)
+		tasks.DELETE("/:id", taskController.Delete)
 	}
 
 	err := r.Run(appPort)
