@@ -26,7 +26,8 @@ func (s *categoryService) CreateCategory(category request.CategoryCreateOrUpdate
 	categoryToCreate := model.Category{}
 	err := smapping.FillStruct(&categoryToCreate, smapping.MapFields(&category))
 	if err != nil {
-		log.Error("Failed map : " + err.Error())
+		log.Error("CreateCategory Failed map : " + err.Error())
+		return categoryToCreate, err
 	}
 
 	res, resErr := s.categoryEntity.CreateCategory(categoryToCreate)
@@ -41,7 +42,8 @@ func (s *categoryService) UpdateCategory(category request.CategoryCreateOrUpdate
 	categoryToUpdate := model.Category{}
 	err := smapping.FillStruct(&categoryToUpdate, smapping.MapFields(&category))
 	if err != nil {
-		log.Error("Failed map : " + err.Error())
+		log.Error("UpdateCategory Failed map : " + err.Error())
+		return categoryToUpdate, err
 	}
 
 	categoryToUpdate.ID = id

@@ -11,8 +11,8 @@ import (
 type CategoryEntity interface {
 	CreateCategory(category model.Category) (c model.Category, e error)
 	// GetCategoryList(id int, name string) (categories []*model.Category)
-	GetCategoryList(id int, name string, page int64, limit int64) paginator.Page[model.Category]
-	GetCategory(id int) (res model.Category, err error)
+	GetCategoryList(id int64, name string, page int64, limit int64) paginator.Page[model.Category]
+	GetCategory(id int64) (res model.Category, err error)
 	UpdateCategory(category model.Category) (c model.Category, e error)
 	DeleteCategory(id int64) (c model.Category, e error)
 }
@@ -36,7 +36,7 @@ func (db *categoryConnection) CreateCategory(category model.Category) (c model.C
 	return category, nil
 }
 
-func (db *categoryConnection) GetCategoryList(id int, name string, page int64, limit int64) paginator.Page[model.Category] {
+func (db *categoryConnection) GetCategoryList(id int64, name string, page int64, limit int64) paginator.Page[model.Category] {
 	// query := db.connection.Model(&categories).Preload(clause.Associations)
 	// if len(name) > 0 {
 	// 	query.Where("name = ?", name)
@@ -65,7 +65,7 @@ func (db *categoryConnection) GetCategoryList(id int, name string, page int64, l
 	return p
 }
 
-func (db *categoryConnection) GetCategory(id int) (category model.Category, err error) {
+func (db *categoryConnection) GetCategory(id int64) (category model.Category, err error) {
 	res := db.connection.First(&category, "id=?", id)
 	if res.Error == nil {
 		return category, nil
