@@ -16,7 +16,6 @@ vendor/
 .env
 
 # Live reload
-.air.toml
 tmp/
 
 # Error log

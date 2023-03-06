@@ -11,6 +11,8 @@ const (
 	EmailNotExists                         = 400005
 	FailedToGetStateToken                  = 400006
 	IdInvalid                              = 400007
+	ImageFileNameLimitOf100                = 400008
+	ImageFileSizeLimitOf5MB                = 400009
 	TokenDoesNotExistOrExpired             = 401001
 	InvalidCredential                      = 401002
 	TokenContainsAnInvalidNumberOfSegments = 401003
@@ -32,6 +34,8 @@ var (
 		400005: "Email not exists.",
 		400006: "Failed to get state token.",
 		400007: "ID Invalid.",
+		400008: "Image file name limit of 100",
+		400009: "Image file size limit of 5 MB",
 		401001: "Token does not exist or expired.",
 		401002: "Invalid credential.",
 		401003: "Token contains an invalid number of segments.",

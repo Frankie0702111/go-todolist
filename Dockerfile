@@ -2,7 +2,7 @@ FROM golang:1.19-alpine
 
 WORKDIR /var/www/app
 
-RUN go install github.com/cosmtrek/air@latest; \
+RUN go install github.com/cosmtrek/air@v1.40.4; \
     go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@v4.15.2
 
 COPY go.mod go.sum ./
