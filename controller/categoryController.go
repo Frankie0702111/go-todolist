@@ -4,7 +4,6 @@ import (
 	"go-todolist/entity"
 	"go-todolist/request"
 	"go-todolist/services"
-	"go-todolist/utils/log"
 	"go-todolist/utils/responses"
 	"net/http"
 	"regexp"
@@ -45,11 +44,13 @@ func (h *categoryController) Create(c *gin.Context) {
 	if createCategoryErr != nil {
 		match, _ := regexp.MatchString("Duplicate", createCategoryErr.Error())
 		if match {
-			response := responses.ErrorsResponse(http.StatusUnauthorized, "Failed to process request", "Error 1062: Duplicate entry "+input.Name, nil)
-			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+			response := responses.ErrorsResponse(http.StatusInternalServerError, "Failed to process request", "Error 1062: Duplicate entry "+input.Name, nil)
+			c.AbortWithStatusJSON(http.StatusInternalServerError, response)
 			return
 		} else {
-			log.Error("Failed to create the category : " + createCategoryErr.Error())
+			response := responses.ErrorsResponse(http.StatusInternalServerError, "Failed to process request", createCategoryErr.Error(), nil)
+			c.AbortWithStatusJSON(http.StatusInternalServerError, response)
+			return
 		}
 	}
 
@@ -82,10 +83,10 @@ func (h *categoryController) Get(c *gin.Context) {
 		return
 	}
 
-	category, categoryerr := h.categoryEntity.GetCategory(input.Id)
-	if categoryerr != nil {
-		response := responses.ErrorsResponse(http.StatusUnauthorized, "Failed to process request", categoryerr.Error(), nil)
-		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+	category, categoryErr := h.categoryEntity.GetCategory(input.Id)
+	if categoryErr != nil {
+		response := responses.ErrorsResponse(http.StatusInternalServerError, "Failed to process request", categoryErr.Error(), nil)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, response)
 		return
 	}
 	if category.ID == 0 {
@@ -109,15 +110,15 @@ func (h *categoryController) Update(c *gin.Context) {
 		return
 	}
 
-	category, categoryerr := h.categoryEntity.GetCategory(id.Id)
-	if categoryerr != nil {
-		response := responses.ErrorsResponse(http.StatusUnauthorized, "Failed to process request", categoryerr.Error(), nil)
-		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+	category, categoryErr := h.categoryEntity.GetCategory(id.Id)
+	if categoryErr != nil {
+		response := responses.ErrorsResponse(http.StatusInternalServerError, "Failed to process request", categoryErr.Error(), nil)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, response)
 		return
 	}
 	if category.ID == 0 {
-		response := responses.ErrorsResponseByCode(http.StatusUnauthorized, "Failed to process request", responses.RecordNotFound, nil)
-		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+		response := responses.ErrorsResponseByCode(http.StatusNotFound, "Failed to process request", responses.RecordNotFound, nil)
+		c.AbortWithStatusJSON(http.StatusNotFound, response)
 		return
 	}
 
@@ -128,10 +129,10 @@ func (h *categoryController) Update(c *gin.Context) {
 		return
 	}
 
-	updateCategory, updateCategoryErr := h.categoryService.UpdateCategory(input, int64(id.Id))
+	updateCategory, updateCategoryErr := h.categoryService.UpdateCategory(input, id.Id)
 	if updateCategoryErr != nil {
-		response := responses.ErrorsResponse(http.StatusUnauthorized, "Failed to process request", updateCategoryErr.Error(), nil)
-		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+		response := responses.ErrorsResponse(http.StatusInternalServerError, "Failed to process request", updateCategoryErr.Error(), nil)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, response)
 		return
 	}
 
@@ -149,22 +150,22 @@ func (h *categoryController) Delete(c *gin.Context) {
 		return
 	}
 
-	category, categoryerr := h.categoryEntity.GetCategory(input.Id)
-	if categoryerr != nil {
-		response := responses.ErrorsResponse(http.StatusUnauthorized, "Failed to process request", categoryerr.Error(), nil)
-		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+	category, categoryErr := h.categoryEntity.GetCategory(input.Id)
+	if categoryErr != nil {
+		response := responses.ErrorsResponse(http.StatusInternalServerError, "Failed to process request", categoryErr.Error(), nil)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, response)
 		return
 	}
 	if category.ID == 0 {
-		response := responses.ErrorsResponseByCode(http.StatusUnauthorized, "Failed to process request", responses.RecordNotFound, nil)
-		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+		response := responses.ErrorsResponseByCode(http.StatusNotFound, "Failed to process request", responses.RecordNotFound, nil)
+		c.AbortWithStatusJSON(http.StatusNotFound, response)
 		return
 	}
 
-	_, deleteCategoryErr := h.categoryEntity.DeleteCategory(int64(input.Id))
+	_, deleteCategoryErr := h.categoryEntity.DeleteCategory(input.Id)
 	if deleteCategoryErr != nil {
-		response := responses.ErrorsResponse(http.StatusUnauthorized, "Failed to process request", deleteCategoryErr.Error(), nil)
-		c.AbortWithStatusJSON(http.StatusUnauthorized, response)
+		response := responses.ErrorsResponse(http.StatusInternalServerError, "Failed to process request", deleteCategoryErr.Error(), nil)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, response)
 		return
 	}
 

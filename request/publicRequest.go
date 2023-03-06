@@ -8,5 +8,5 @@ type Pagination struct {
 }
 
 type TableID struct {
-	Id int `uri:"id" binding:"required"`
+	Id int64 `uri:"id" binding:"required"`
 }
