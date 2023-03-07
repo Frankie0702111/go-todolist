@@ -56,7 +56,7 @@ func SetupRouter() *gin.Engine {
 
 	// r := gin.New()
 	r := gin.Default()
-	// r.Use(middleware.CORS())
+	r.Use(middleware.CORS())
 
 	// IPv6 0:0:0:0:0:0:0:1 = ::1 (Omit 0) = 0.0.0.0/0
 	r.SetTrustedProxies([]string{"::1", "192.168.0.0/16", "172.16.0.0/12", "127.0.0.1/8", "10.0.0.0/8", "0.0.0.0/0"})
