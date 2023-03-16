@@ -17,6 +17,7 @@ Note: <br>
  - [How to build project](#how-to-build-project)
  - [Folder structure](#folder-structure)
  - [Folder definition](#folder-definition)
+ - [How to get telegram notifications](#how-to-get-telegram-notifications)
 
 # Software requirement
  - **Database**
@@ -197,3 +198,9 @@ make migrate-down number=1
 - Utils
 > 模組化程式碼置放處，提供專案調用 <br>
 > Modular code placement for project calls
+
+# How to get telegram notifications
+1. Sign in to your Telegram account
+2. Search for this account "@GolangToDoListBot" and press "Start".
+3. Input this command "/setaccess {Email}" to set your configuration
+4. To be continued ...

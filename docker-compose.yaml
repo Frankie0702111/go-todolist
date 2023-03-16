@@ -9,10 +9,26 @@ services:
     volumes:
       - type: bind
         source: .
-        target: /var/www/app
+        target: /var/www/app/todolist
     ports:
       - target: 8642
-        published: ${APP_PORT:-8642}
+        published: ${SERVER_PORT:-8642}
+        protocol: tcp
+        mode: host
+    depends_on:
+      - db
+  telegram_bot_todolist:
+    container_name: "${PROJECT_NAME}-telegram-bot-todolist"
+    build:
+      context: .
+      dockerfile: ../go-telegram-bot-todolist/Dockerfile
+    volumes:
+      - type: bind
+        source: ../go-telegram-bot-todolist
+        target: /var/www/app/go-telegram-bot-todolist
+    ports:
+      - target: 7531
+        published: ${TELEGRAM_PORT:-7531}
         protocol: tcp
         mode: host
     depends_on:
