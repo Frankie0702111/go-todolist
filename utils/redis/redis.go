@@ -19,12 +19,11 @@ func InitRedis() *redis.Client {
 
 	dbHost := os.Getenv("REDIS_HOST")
 	dbPassword := os.Getenv("REDIS_PASSWORD")
-	dbPort := os.Getenv("REDIS_PORT")
 
 	log.Println("Testing Golang Redis")
 
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     fmt.Sprintf("%s:%s", dbHost, dbPort),
+		Addr:     fmt.Sprintf("%s:6379", dbHost),
 		Password: dbPassword, // no password set
 		DB:       0,          // use default DB
 	})

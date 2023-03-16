@@ -48,7 +48,7 @@ func SetupRouter() *gin.Engine {
 		log.Panic("Failed to load env file")
 	}
 
-	appPort := fmt.Sprintf(":%s", os.Getenv("APP_PORT"))
+	appPort := fmt.Sprintf(":%s", os.Getenv("SERVER_PORT"))
 
 	// Closing the database when the program stop
 	defer gorm_utils.Close(db)
