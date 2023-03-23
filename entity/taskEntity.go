@@ -72,7 +72,7 @@ func (db *taskConnection) GetTaskList(id int64, user_id int64, title string, spe
 }
 
 func (db *taskConnection) GetTask(id int64) (task model.Task, err error) {
-	res := db.connection.First(&task, "id=?", id)
+	res := db.connection.Preload("Category").First(&task, "id=?", id)
 	if res.Error == nil {
 		return task, nil
 	}

@@ -25,7 +25,6 @@ type TaskCreateRequest struct {
 	SpecifyDatetime *time.Time            `form:"specify_datetime" json:"specify_datetime,omitempty" time_format:"2006-01-02 15:04:05"`
 	IsSpecifyTime   bool                  `form:"is_specify_time" json:"is_specify_time,omitempty"`
 	Priority        int8                  `form:"priority" json:"priority" binding:"required,oneof=1 2 3"`
-	Progress        string                `form:"progress" json:"progress" binding:"required,oneof=Draft Processing Done"`
 	IsComplete      bool                  `form:"is_complete" json:"is_complete,omitempty"`
 }
 
@@ -38,7 +37,6 @@ type TaskUpdateRequest struct {
 	SpecifyDatetime *time.Time            `form:"specify_datetime" json:"specify_datetime,omitempty" time_format:"2006-01-02 15:04:05"`
 	IsSpecifyTime   bool                  `form:"is_specify_time" json:"is_specify_time,omitempty"`
 	Priority        int8                  `form:"priority" json:"priority,omitempty" binding:"required,oneof=1 2 3"`
-	Progress        string                `form:"progress" json:"progress,omitempty" binding:"required,oneof=Draft Processing Done"`
 	IsComplete      bool                  `form:"is_complete" json:"is_complete,omitempty"`
 }
 
