@@ -200,7 +200,8 @@ make migrate-down number=1
 > Modular code placement for project calls
 
 # How to get telegram notifications
-1. Sign in to your Telegram account
+1. Sign in to your Telegram account.
 2. Search for this account "@GolangToDoListBot" and press "Start".
-3. Input this command "/setaccess {Email}" to set your configuration
-4. To be continued ...
+3. Input this command "/setaccess {Email}" to set your configuration.
+4. Input this command "/tasklist" to check for incomplete tasks.
+5. To be continued ...
