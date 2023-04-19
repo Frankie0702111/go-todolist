@@ -42,6 +42,15 @@ var (
 	googleState = os.Getenv("GOOGLE_OAUTH_SECRET")
 )
 
+// @Summary		"Google Login"
+// @Description	"Redirect to Google login page"
+// @Tags		"OAuth"
+// @Version		1.0
+// @Produce 	application/json
+// @Success 	200 object responses.Response{errors=string,data=string} "Google access success"
+// @Success 	303 object string "See other"
+// @Failure 	400 object responses.Response{errors=string,data=string} "Failed to GoogleCallBack"
+// @Router		/oauth/google/login [get]
 func GoogleLogin(c *gin.Context) {
 	googleOAuthConfig.ClientID = os.Getenv("GOOGLE_OAUTH_CLIENT_ID")
 

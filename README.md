@@ -91,6 +91,11 @@ make migrate-up number=1
 make migrate-down number=1
 ```
 
+## 5.Build Swagger API documentation
+```bash
+docker compose exec server swag init
+```
+
 # Folder structure
 ```
 ├── Dockerfile
@@ -103,6 +108,10 @@ make migrate-down number=1
 │   ├── taskController.go
 │   └── userController.go
 ├── docker-compose.yaml
+├── docs
+│   ├── docs.go
+│   ├── swagger.json
+│   └── swagger.yaml
 ├── entity
 │   ├── categoryEntity.go
 │   ├── redisEntity.go
@@ -162,6 +171,10 @@ make migrate-down number=1
 - Controller
 > 接收 HTTP request 調用 request & service <br>
 > Receiving HTTP requests calling requests and services
+
+- Docs
+> Swagger API 文件位置 <br>
+> Swagger API documentation location
 
 - Entity
 > 協助 service 調用 sql query <br>
