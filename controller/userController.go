@@ -59,6 +59,16 @@ func ParseToken(c *gin.Context) string {
 }
 
 // Login is a function for user login
+// @Summary "User Login"
+// @Tags	"Auth"
+// @Version 1.0
+// @Produce application/json
+// @Param	* body request.LoginRequest true "User Login"
+// @Success 200 object responses.Response{errors=string,data=string} "Login successfully"
+// @Failure 400 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Failure 401 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Failure 500 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Router	/auth/login [post]
 func (h *userController) Login(c *gin.Context) {
 	// create new instance of LoginRequest
 	var input request.LoginRequest
@@ -97,6 +107,14 @@ func (h *userController) Login(c *gin.Context) {
 }
 
 // Register is a function for user register
+// @Summary "User Register"
+// @Tags	"Auth"
+// @Version 1.0
+// @Produce application/json
+// @Param	* body request.RegisterRequest true "User Register"
+// @Success 201 object responses.Response{errors=string,data=string} "Register Success"
+// @Failure 400 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Router	/auth/register [post]
 func (h *userController) Register(c *gin.Context) {
 	// create new instance of RegisterRequest
 	var input request.RegisterRequest
@@ -128,6 +146,14 @@ func (h *userController) Register(c *gin.Context) {
 }
 
 // RefreshToken is a function for token refresh
+// @Summary "User Refresh Token"
+// @Tags	"Auth"
+// @Version 1.0
+// @Produce application/json
+// @Param	Authorization header string true "example:Bearer token (Bearer+space+token)."
+// @Success 200 object responses.Response{errors=string,data=string} "Refresh token successfully"
+// @Failure 401 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Router	/auth/refresh [post]
 func (h *userController) RefreshToken(c *gin.Context) {
 	var refreshToken model.Token
 	authHeader := ParseToken(c)
@@ -146,6 +172,14 @@ func (h *userController) RefreshToken(c *gin.Context) {
 }
 
 // Logout is a function for user logout
+// @Summary "User Logout"
+// @Tags	"Auth"
+// @Version 1.0
+// @Produce application/json
+// @Param	Authorization header string true "example:Bearer token (Bearer+space+token)."
+// @Success 200 object responses.Response{errors=string,data=string} "Successfully logged out"
+// @Failure 401 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Router	/auth/logout [post]
 func (h *userController) Logout(c *gin.Context) {
 	authHeader := ParseToken(c)
 	logout := h.jwtService.Logout(authHeader)

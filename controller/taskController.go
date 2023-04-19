@@ -36,6 +36,26 @@ func (h *taskController) getUuid(user_id int64) interface{} {
 	return task
 }
 
+// @Summary "Create task"
+// @Tags	"Task"
+// @Version 1.0
+// @Accept	multipart/form-data
+// @Produce application/json
+// @Param	Authorization		header		string	true	"example:Bearer token (Bearer+space+token)."
+// @Param	user_id				formData	integer	true	"User ID"
+// @Param	category_id			formData	integer	true	"Category ID"
+// @Param	title				formData	string	true	"Title (maxLength: 100)"
+// @Param	note				formData	string	false	"Note"
+// @Param	url					formData	string	false	"Url"
+// @Param	image				formData	file	false	"Image"
+// @Param	specify_datetime	formData	string	false	"Specify Datetime (DateTime: 2006-01-02 15:04:05)"
+// @Param	is_specify_time		formData	boolean	false	"Is Specify Time"
+// @Param	priority			formData	integer	true	"Priority (Enum: [1, 2, 3])"
+// @Param	is_complete			formData	boolean	false	"Is Complete"
+// @Success 201 object responses.Response{errors=string,data=string} "Create Success"
+// @Failure 400 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Failure 500 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Router	/task [post]
 func (h *taskController) Create(c *gin.Context) {
 	var input request.TaskCreateRequest
 	err := c.ShouldBind(&input)
@@ -73,11 +93,27 @@ func (h *taskController) Create(c *gin.Context) {
 		}
 	}
 
-	response := responses.SuccessResponse(http.StatusOK, "Create Success", createTask)
-	c.JSON(http.StatusOK, response)
+	response := responses.SuccessResponse(http.StatusCreated, "Create Success", createTask)
+	c.JSON(http.StatusCreated, response)
 	return
 }
 
+// @Summary "Task list"
+// @Tags	"Task"
+// @Version 1.0
+// @Produce application/json
+// @Param	Authorization		header		string	true	"example:Bearer token (Bearer+space+token)."
+// @Param	id					formData	integer	false	"Task ID"
+// @Param	user_id				formData	integer	false	"User ID"
+// @Param	title				formData	string	false	"Title (maxLength: 100)"
+// @Param	specify_datetime	formData	string	false	"Specify Datetime (DateTime: 2006-01-02 15:04:05)"
+// @Param	is_specify_time		formData	boolean	false	"Is Specify Time"
+// @Param	is_complete			formData	boolean	false	"Is Complete"
+// @Param	page				query		integer	true	"Page (Please start from 1)"
+// @Param	limit				query		integer	true	"Limit (Please start from 5 or 10)"
+// @Success 200 object responses.PageResponse{errors=string,data=string} "Successfully get task list"
+// @Failure 400 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Router	/task [get]
 func (h *taskController) GetByList(c *gin.Context) {
 	var input request.TaskGetListRequest
 	err := c.ShouldBind(&input)
@@ -93,6 +129,16 @@ func (h *taskController) GetByList(c *gin.Context) {
 	return
 }
 
+// @Summary "Get a single task"
+// @Tags	"Task"
+// @Version 1.0
+// @Produce application/json
+// @Param	Authorization	header	string	true	"example:Bearer token (Bearer+space+token)."
+// @Param	id				path	integer	true	"Task ID"
+// @Success 200 object responses.Response{errors=string,data=string} "Record not found || Successfully get task"
+// @Failure 400 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Failure 500 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Router	/task/{id} [get]
 func (h *taskController) Get(c *gin.Context) {
 	var input request.TaskGetRequest
 	err := c.ShouldBindUri(&input)
@@ -115,11 +161,32 @@ func (h *taskController) Get(c *gin.Context) {
 		return
 	}
 
-	response := responses.SuccessResponse(http.StatusOK, "Successfully get category", task)
+	response := responses.SuccessResponse(http.StatusOK, "Successfully get task", task)
 	c.JSON(http.StatusOK, response)
 	return
 }
 
+// @Summary "Update a single task"
+// @Tags	"Task"
+// @Version 1.0
+// @Accept	multipart/form-data
+// @Produce application/json
+// @Param	Authorization		header		string	true	"example:Bearer token (Bearer+space+token)."
+// @Param	id					path		integer	true	"Task ID"
+// @Param	category_id			formData	integer	false	"Category ID"
+// @Param	title				formData	string	false	"Title (maxLength: 100)"
+// @Param	note				formData	string	false	"Note"
+// @Param	url					formData	string	false	"Url"
+// @Param	image				formData	file	false	"Image"
+// @Param	specify_datetime	formData	string	false	"Specify Datetime (DateTime: 2006-01-02 15:04:05)"
+// @Param	is_specify_time		formData	boolean	false	"Is Specify Time"
+// @Param	priority			formData	integer	true	"Priority (Enum: [1, 2, 3])"
+// @Param	is_complete			formData	boolean	false	"Is Complete"
+// @Success 200 object responses.Response{errors=string,data=string} "Update Success"
+// @Failure 400 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Failure 404 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Failure 500 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Router	/task/{id} [PATCH]
 func (h *taskController) Update(c *gin.Context) {
 	var input request.TaskUpdateRequest
 	var id request.TaskGetRequest
@@ -169,6 +236,17 @@ func (h *taskController) Update(c *gin.Context) {
 	return
 }
 
+// @Summary "Delete a single task"
+// @Tags	"Task"
+// @Version 1.0
+// @Produce application/json
+// @Param	Authorization	header	string	true	"example:Bearer token (Bearer+space+token)."
+// @Param	id				path	integer	true	"Task ID"
+// @Success 200 object responses.Response{errors=string,data=string} "Delete Success"
+// @Failure 400 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Failure 404 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Failure 500 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Router	/task/{id} [delete]
 func (h *taskController) Delete(c *gin.Context) {
 	var input request.TaskGetRequest
 	err := c.ShouldBindUri(&input)

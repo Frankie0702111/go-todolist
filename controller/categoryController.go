@@ -31,9 +31,19 @@ func NewCategoryController(categoryService services.CategoryService, categoryEnt
 	}
 }
 
+// @Summary "Create category"
+// @Tags	"Category"
+// @Version 1.0
+// @Produce application/json
+// @Param	Authorization	header		string	true	"example:Bearer token (Bearer+space+token)."
+// @Param	name			formData	string	true	"Category Name (maxLength: 100)"
+// @Success 201 object responses.Response{errors=string,data=string} "Create Success"
+// @Failure 400 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Failure 500 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Router	/category [post]
 func (h *categoryController) Create(c *gin.Context) {
 	var input request.CategoryCreateOrUpdateRequest
-	err := c.ShouldBindJSON(&input)
+	err := c.ShouldBind(&input)
 	if err != nil {
 		response := responses.ErrorsResponse(http.StatusBadRequest, "Failed to process request", err.Error(), nil)
 		c.AbortWithStatusJSON(http.StatusBadRequest, response)
@@ -54,11 +64,24 @@ func (h *categoryController) Create(c *gin.Context) {
 		}
 	}
 
-	response := responses.SuccessResponse(http.StatusOK, "Create Success", createCategory)
-	c.JSON(http.StatusOK, response)
+	response := responses.SuccessResponse(http.StatusCreated, "Create Success", createCategory)
+	c.JSON(http.StatusCreated, response)
 	return
 }
 
+// @Summary "Category list"
+// @Tags	"Category"
+// @Version 1.0
+// @Produce application/json
+// @Param	Authorization	header		string	true	"example:Bearer token (Bearer+space+token)."
+// @Param	id				query		integer	false	"Category ID"
+// @Param	name			query		string	false	"Category Name (maxLength: 100)"
+// @Param	page			query		integer	true	"Page (Please start from 1)"
+// @Param	limit			query		integer	true	"Limit (Please start from 5 or 10)"
+// @Success 200 object responses.PageResponse{errors=string,data=string} "Record not found || Successfully get category"
+// @Failure 400 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Failure 500 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Router	/category [get]
 func (h *categoryController) GetByList(c *gin.Context) {
 	var input request.CategoryGetListRequest
 	err := c.ShouldBind(&input)
@@ -74,6 +97,16 @@ func (h *categoryController) GetByList(c *gin.Context) {
 	return
 }
 
+// @Summary	"Get a single category"
+// @Tags	"Category"
+// @Version	1.0
+// @Produce	application/json
+// @Param	Authorization	header		string	true	"example:Bearer token (Bearer+space+token)."
+// @Param	id				path		integer	true	"Category ID"
+// @Success	200 object responses.Response{errors=string,data=string} "Record not found || Successfully get category"
+// @Failure	400 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Failure	500 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Router	/category/{id} [get]
 func (h *categoryController) Get(c *gin.Context) {
 	var input request.CategoryGetRequest
 	err := c.ShouldBindUri(&input)
@@ -100,6 +133,18 @@ func (h *categoryController) Get(c *gin.Context) {
 	return
 }
 
+// @Summary	"Update a single category"
+// @Tags	"Category"
+// @Version	1.0
+// @Produce	application/json
+// @Param	Authorization	header		string	true	"example:Bearer token (Bearer+space+token)."
+// @Param	id				path		integer	true	"Category ID"
+// @Param	name			query		string	true	"Category Name (maxLength: 100)"
+// @Success	200 object responses.Response{errors=string,data=string} "Update Success"
+// @Failure	400 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Failure	404 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Failure	500 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Router	/category/{id} [PATCH]
 func (h *categoryController) Update(c *gin.Context) {
 	var input request.CategoryCreateOrUpdateRequest
 	var id request.CategoryGetRequest
@@ -122,7 +167,7 @@ func (h *categoryController) Update(c *gin.Context) {
 		return
 	}
 
-	inputErr := c.ShouldBindJSON(&input)
+	inputErr := c.ShouldBind(&input)
 	if inputErr != nil {
 		response := responses.ErrorsResponse(http.StatusBadRequest, "Failed to process request", inputErr.Error(), nil)
 		c.AbortWithStatusJSON(http.StatusBadRequest, response)
@@ -141,6 +186,17 @@ func (h *categoryController) Update(c *gin.Context) {
 	return
 }
 
+// @Summary	"Delete a single category"
+// @Tags	"Category"
+// @Version	1.0
+// @Produce	application/json
+// @Param	Authorization	header		string	true	"example:Bearer token (Bearer+space+token)."
+// @Param	id				path		integer	true	"Category ID"
+// @Success	200 object responses.Response{errors=string,data=string} "Delete Success"
+// @Failure	400 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Failure	404 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Failure	500 object responses.Response{errors=string,data=string} "Failed to process request"
+// @Router	/category/{id} [delete]
 func (h *categoryController) Delete(c *gin.Context) {
 	var input request.CategoryGetRequest
 	err := c.ShouldBindUri(&input)

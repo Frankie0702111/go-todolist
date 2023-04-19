@@ -1,0 +1,944 @@
+basePath: /api/v1
+definitions:
+  request.LoginRequest:
+    properties:
+      email:
+        maxLength: 50
+        type: string
+      password:
+        minLength: 6
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  request.RegisterRequest:
+    properties:
+      email:
+        maxLength: 50
+        type: string
+      password:
+        minLength: 6
+        type: string
+      username:
+        maxLength: 50
+        minLength: 3
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+  responses.PageResponse:
+    properties:
+      code:
+        type: integer
+      currentPage:
+        type: integer
+      data: {}
+      errors: {}
+      message:
+        type: string
+      pageLimit:
+        type: integer
+      pages:
+        description: Total page
+        type: integer
+      total:
+        description: Data count
+        type: integer
+    type: object
+  responses.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      errors: {}
+      message:
+        type: string
+    type: object
+host: localhost:8642
+info:
+  contact: {}
+  description: Gin swagger
+  title: Gin swagger
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      parameters:
+      - description: User Login
+        in: body
+        name: '*'
+        required: true
+        schema:
+          $ref: '#/definitions/request.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "400":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "401":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "500":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+      summary: '"User Login"'
+      tags:
+      - '"Auth"'
+  /auth/logout:
+    post:
+      parameters:
+      - description: example:Bearer token (Bearer+space+token).
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully logged out
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "401":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+      summary: '"User Logout"'
+      tags:
+      - '"Auth"'
+  /auth/refresh:
+    post:
+      parameters:
+      - description: example:Bearer token (Bearer+space+token).
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Refresh token successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "401":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+      summary: '"User Refresh Token"'
+      tags:
+      - '"Auth"'
+  /auth/register:
+    post:
+      parameters:
+      - description: User Register
+        in: body
+        name: '*'
+        required: true
+        schema:
+          $ref: '#/definitions/request.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Register Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "400":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+      summary: '"User Register"'
+      tags:
+      - '"Auth"'
+  /category:
+    get:
+      parameters:
+      - description: example:Bearer token (Bearer+space+token).
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Category ID
+        in: query
+        name: id
+        type: integer
+      - description: 'Category Name (maxLength: 100)'
+        in: query
+        name: name
+        type: string
+      - description: Page (Please start from 1)
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Limit (Please start from 5 or 10)
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Record not found || Successfully get category
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.PageResponse'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "400":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "500":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+      summary: '"Category list"'
+      tags:
+      - '"Category"'
+    post:
+      parameters:
+      - description: example:Bearer token (Bearer+space+token).
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: 'Category Name (maxLength: 100)'
+        in: formData
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Create Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "400":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "500":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+      summary: '"Create category"'
+      tags:
+      - '"Category"'
+  /category/{id}:
+    delete:
+      parameters:
+      - description: example:Bearer token (Bearer+space+token).
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Delete Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "400":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "404":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "500":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+      summary: '"Delete a single category"'
+      tags:
+      - '"Category"'
+    get:
+      parameters:
+      - description: example:Bearer token (Bearer+space+token).
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Record not found || Successfully get category
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "400":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "500":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+      summary: '"Get a single category"'
+      tags:
+      - '"Category"'
+    patch:
+      parameters:
+      - description: example:Bearer token (Bearer+space+token).
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 'Category Name (maxLength: 100)'
+        in: query
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "400":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "404":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "500":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+      summary: '"Update a single category"'
+      tags:
+      - '"Category"'
+  /oauth/google/login:
+    get:
+      description: '"Redirect to Google login page"'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Google access success
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "303":
+          description: See other
+          schema:
+            type: string
+        "400":
+          description: Failed to GoogleCallBack
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+      summary: '"Google Login"'
+      tags:
+      - '"OAuth"'
+  /task:
+    get:
+      parameters:
+      - description: example:Bearer token (Bearer+space+token).
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Task ID
+        in: formData
+        name: id
+        type: integer
+      - description: User ID
+        in: formData
+        name: user_id
+        type: integer
+      - description: 'Title (maxLength: 100)'
+        in: formData
+        name: title
+        type: string
+      - description: 'Specify Datetime (DateTime: 2006-01-02 15:04:05)'
+        in: formData
+        name: specify_datetime
+        type: string
+      - description: Is Specify Time
+        in: formData
+        name: is_specify_time
+        type: boolean
+      - description: Is Complete
+        in: formData
+        name: is_complete
+        type: boolean
+      - description: Page (Please start from 1)
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: Limit (Please start from 5 or 10)
+        in: query
+        name: limit
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully get task list
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.PageResponse'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "400":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+      summary: '"Task list"'
+      tags:
+      - '"Task"'
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: example:Bearer token (Bearer+space+token).
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: User ID
+        in: formData
+        name: user_id
+        required: true
+        type: integer
+      - description: Category ID
+        in: formData
+        name: category_id
+        required: true
+        type: integer
+      - description: 'Title (maxLength: 100)'
+        in: formData
+        name: title
+        required: true
+        type: string
+      - description: Note
+        in: formData
+        name: note
+        type: string
+      - description: Url
+        in: formData
+        name: url
+        type: string
+      - description: Image
+        in: formData
+        name: image
+        type: file
+      - description: 'Specify Datetime (DateTime: 2006-01-02 15:04:05)'
+        in: formData
+        name: specify_datetime
+        type: string
+      - description: Is Specify Time
+        in: formData
+        name: is_specify_time
+        type: boolean
+      - description: 'Priority (Enum: [1, 2, 3])'
+        in: formData
+        name: priority
+        required: true
+        type: integer
+      - description: Is Complete
+        in: formData
+        name: is_complete
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Create Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "400":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "500":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+      summary: '"Create task"'
+      tags:
+      - '"Task"'
+  /task/{id}:
+    delete:
+      parameters:
+      - description: example:Bearer token (Bearer+space+token).
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Delete Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "400":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "404":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "500":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+      summary: '"Delete a single task"'
+      tags:
+      - '"Task"'
+    get:
+      parameters:
+      - description: example:Bearer token (Bearer+space+token).
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Record not found || Successfully get task
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "400":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "500":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+      summary: '"Get a single task"'
+      tags:
+      - '"Task"'
+    patch:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: example:Bearer token (Bearer+space+token).
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Task ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Category ID
+        in: formData
+        name: category_id
+        type: integer
+      - description: 'Title (maxLength: 100)'
+        in: formData
+        name: title
+        type: string
+      - description: Note
+        in: formData
+        name: note
+        type: string
+      - description: Url
+        in: formData
+        name: url
+        type: string
+      - description: Image
+        in: formData
+        name: image
+        type: file
+      - description: 'Specify Datetime (DateTime: 2006-01-02 15:04:05)'
+        in: formData
+        name: specify_datetime
+        type: string
+      - description: Is Specify Time
+        in: formData
+        name: is_specify_time
+        type: boolean
+      - description: 'Priority (Enum: [1, 2, 3])'
+        in: formData
+        name: priority
+        required: true
+        type: integer
+      - description: Is Complete
+        in: formData
+        name: is_complete
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Update Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "400":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "404":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+        "500":
+          description: Failed to process request
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  type: string
+                errors:
+                  type: string
+              type: object
+      summary: '"Update a single task"'
+      tags:
+      - '"Task"'
+swagger: "2.0"

@@ -8,7 +8,7 @@ import (
 type TaskGetListRequest struct {
 	Id              int64      `form:"id" json:"id,omitempty"`
 	UserID          int64      `form:"user_id" json:"user_id,omitempty"`
-	Title           string     `form:"title" json:"title,omitempty" binding:"max=255"`
+	Title           string     `form:"title" json:"title,omitempty" binding:"max=100"`
 	SpecifyDatetime *time.Time `form:"specify_datetime" json:"specify_datetime,omitempty" time_format:"2006-01-02 15:04:05"`
 	IsSpecifyTime   *bool      `form:"is_specify_time" json:"is_specify_time,omitempty"`
 	IsComplete      *bool      `form:"is_complete" json:"is_complete,omitempty"`
@@ -36,7 +36,7 @@ type TaskUpdateRequest struct {
 	Image           *multipart.FileHeader `form:"image" json:"image,omitempty"`
 	SpecifyDatetime *time.Time            `form:"specify_datetime" json:"specify_datetime,omitempty" time_format:"2006-01-02 15:04:05"`
 	IsSpecifyTime   bool                  `form:"is_specify_time" json:"is_specify_time,omitempty"`
-	Priority        int8                  `form:"priority" json:"priority,omitempty" binding:"required,oneof=1 2 3"`
+	Priority        int8                  `form:"priority" json:"priority" binding:"required,oneof=1 2 3"`
 	IsComplete      bool                  `form:"is_complete" json:"is_complete,omitempty"`
 }
 

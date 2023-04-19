@@ -3,6 +3,7 @@ package router
 import (
 	"fmt"
 	"go-todolist/controller"
+	_ "go-todolist/docs"
 	"go-todolist/entity"
 	"go-todolist/middleware"
 	"go-todolist/services"
@@ -11,6 +12,9 @@ import (
 	"go-todolist/utils/log"
 	redis_utils "go-todolist/utils/redis"
 	"os"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/gin-gonic/gin"
@@ -107,6 +111,11 @@ func SetupRouter() *gin.Engine {
 		tasks.GET("/:id", taskController.Get)
 		tasks.PATCH("/:id", taskController.Update)
 		tasks.DELETE("/:id", taskController.Delete)
+	}
+
+	swagger := r.Group(v1 + "/swagger")
+	{
+		swagger.GET("/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	}
 
 	err := r.Run(appPort)
