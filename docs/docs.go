@@ -136,6 +136,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "default": "Bearer",
                         "description": "example:Bearer token (Bearer+space+token).",
                         "name": "Authorization",
                         "in": "header",
@@ -200,6 +201,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "default": "Bearer",
                         "description": "example:Bearer token (Bearer+space+token).",
                         "name": "Authorization",
                         "in": "header",
@@ -330,33 +332,40 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "default": "Bearer",
                         "description": "example:Bearer token (Bearer+space+token).",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
+                        "minimum": 1,
                         "type": "integer",
                         "description": "Category ID",
                         "name": "id",
                         "in": "query"
                     },
                     {
+                        "maxLength": 100,
                         "type": "string",
-                        "description": "Category Name (maxLength: 100)",
+                        "description": "Category Name",
                         "name": "name",
                         "in": "query"
                     },
                     {
+                        "minimum": 1,
                         "type": "integer",
-                        "description": "Page (Please start from 1)",
+                        "default": 1,
+                        "description": "Page",
                         "name": "page",
                         "in": "query",
                         "required": true
                     },
                     {
+                        "minimum": 2,
                         "type": "integer",
-                        "description": "Limit (Please start from 5 or 10)",
+                        "default": 5,
+                        "description": "Limit",
                         "name": "limit",
                         "in": "query",
                         "required": true
@@ -439,14 +448,16 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "default": "Bearer",
                         "description": "example:Bearer token (Bearer+space+token).",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
+                        "maxLength": 100,
                         "type": "string",
-                        "description": "Category Name (maxLength: 100)",
+                        "description": "Category Name",
                         "name": "name",
                         "in": "formData",
                         "required": true
@@ -531,12 +542,14 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "default": "Bearer",
                         "description": "example:Bearer token (Bearer+space+token).",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
+                        "minimum": 1,
                         "type": "integer",
                         "description": "Category ID",
                         "name": "id",
@@ -621,12 +634,14 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "default": "Bearer",
                         "description": "example:Bearer token (Bearer+space+token).",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
+                        "minimum": 1,
                         "type": "integer",
                         "description": "Category ID",
                         "name": "id",
@@ -732,12 +747,14 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "default": "Bearer",
                         "description": "example:Bearer token (Bearer+space+token).",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
+                        "minimum": 1,
                         "type": "integer",
                         "description": "Category ID",
                         "name": "id",
@@ -745,8 +762,9 @@ const docTemplate = `{
                         "required": true
                     },
                     {
+                        "maxLength": 100,
                         "type": "string",
-                        "description": "Category Name (maxLength: 100)",
+                        "description": "Category Name",
                         "name": "name",
                         "in": "query",
                         "required": true
@@ -914,26 +932,30 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "default": "Bearer",
                         "description": "example:Bearer token (Bearer+space+token).",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
+                        "minimum": 1,
                         "type": "integer",
                         "description": "Task ID",
                         "name": "id",
                         "in": "formData"
                     },
                     {
+                        "minimum": 1,
                         "type": "integer",
                         "description": "User ID",
                         "name": "user_id",
                         "in": "formData"
                     },
                     {
+                        "maxLength": 100,
                         "type": "string",
-                        "description": "Title (maxLength: 100)",
+                        "description": "Title",
                         "name": "title",
                         "in": "formData"
                     },
@@ -956,15 +978,19 @@ const docTemplate = `{
                         "in": "formData"
                     },
                     {
+                        "minimum": 1,
                         "type": "integer",
-                        "description": "Page (Please start from 1)",
+                        "default": 1,
+                        "description": "Page",
                         "name": "page",
                         "in": "query",
                         "required": true
                     },
                     {
+                        "minimum": 2,
                         "type": "integer",
-                        "description": "Limit (Please start from 5 or 10)",
+                        "default": 5,
+                        "description": "Limit",
                         "name": "limit",
                         "in": "query",
                         "required": true
@@ -1029,12 +1055,14 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "default": "Bearer",
                         "description": "example:Bearer token (Bearer+space+token).",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
+                        "minimum": 1,
                         "type": "integer",
                         "description": "User ID",
                         "name": "user_id",
@@ -1042,6 +1070,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
+                        "minimum": 1,
                         "type": "integer",
                         "description": "Category ID",
                         "name": "category_id",
@@ -1049,8 +1078,9 @@ const docTemplate = `{
                         "required": true
                     },
                     {
+                        "maxLength": 100,
                         "type": "string",
-                        "description": "Title (maxLength: 100)",
+                        "description": "Title",
                         "name": "title",
                         "in": "formData",
                         "required": true
@@ -1086,14 +1116,21 @@ const docTemplate = `{
                         "in": "formData"
                     },
                     {
+                        "enum": [
+                            1,
+                            2,
+                            3
+                        ],
                         "type": "integer",
-                        "description": "Priority (Enum: [1, 2, 3])",
+                        "default": 1,
+                        "description": "Priority",
                         "name": "priority",
                         "in": "formData",
                         "required": true
                     },
                     {
                         "type": "boolean",
+                        "default": false,
                         "description": "Is Complete",
                         "name": "is_complete",
                         "in": "formData"
@@ -1178,12 +1215,14 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "default": "Bearer",
                         "description": "example:Bearer token (Bearer+space+token).",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
+                        "minimum": 1,
                         "type": "integer",
                         "description": "Task ID",
                         "name": "id",
@@ -1268,12 +1307,14 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "default": "Bearer",
                         "description": "example:Bearer token (Bearer+space+token).",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
+                        "minimum": 1,
                         "type": "integer",
                         "description": "Task ID",
                         "name": "id",
@@ -1382,12 +1423,14 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "default": "Bearer",
                         "description": "example:Bearer token (Bearer+space+token).",
                         "name": "Authorization",
                         "in": "header",
                         "required": true
                     },
                     {
+                        "minimum": 1,
                         "type": "integer",
                         "description": "Task ID",
                         "name": "id",
@@ -1395,14 +1438,16 @@ const docTemplate = `{
                         "required": true
                     },
                     {
+                        "minimum": 1,
                         "type": "integer",
                         "description": "Category ID",
                         "name": "category_id",
                         "in": "formData"
                     },
                     {
+                        "maxLength": 100,
                         "type": "string",
-                        "description": "Title (maxLength: 100)",
+                        "description": "Title",
                         "name": "title",
                         "in": "formData"
                     },
@@ -1437,8 +1482,13 @@ const docTemplate = `{
                         "in": "formData"
                     },
                     {
+                        "enum": [
+                            1,
+                            2,
+                            3
+                        ],
                         "type": "integer",
-                        "description": "Priority (Enum: [1, 2, 3])",
+                        "description": "Priority",
                         "name": "priority",
                         "in": "formData",
                         "required": true

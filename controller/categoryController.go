@@ -35,8 +35,8 @@ func NewCategoryController(categoryService services.CategoryService, categoryEnt
 // @Tags	"Category"
 // @Version 1.0
 // @Produce application/json
-// @Param	Authorization	header		string	true	"example:Bearer token (Bearer+space+token)."
-// @Param	name			formData	string	true	"Category Name (maxLength: 100)"
+// @Param	Authorization	header		string	true	"example:Bearer token (Bearer+space+token)."	default(Bearer )
+// @Param	name			formData	string	true	"Category Name"									maxLength(100)
 // @Success 201 object responses.Response{errors=string,data=string} "Create Success"
 // @Failure 400 object responses.Response{errors=string,data=string} "Failed to process request"
 // @Failure 500 object responses.Response{errors=string,data=string} "Failed to process request"
@@ -73,11 +73,11 @@ func (h *categoryController) Create(c *gin.Context) {
 // @Tags	"Category"
 // @Version 1.0
 // @Produce application/json
-// @Param	Authorization	header		string	true	"example:Bearer token (Bearer+space+token)."
-// @Param	id				query		integer	false	"Category ID"
-// @Param	name			query		string	false	"Category Name (maxLength: 100)"
-// @Param	page			query		integer	true	"Page (Please start from 1)"
-// @Param	limit			query		integer	true	"Limit (Please start from 5 or 10)"
+// @Param	Authorization	header		string	true	"example:Bearer token (Bearer+space+token)."	default(Bearer )
+// @Param	id				query		integer	false	"Category ID"									minimum(1)
+// @Param	name			query		string	false	"Category Name"									maxLength(100)
+// @Param	page			query		integer	true	"Page"											minimum(1) default(1)
+// @Param	limit			query		integer	true	"Limit"											minimum(2) default(5)
 // @Success 200 object responses.PageResponse{errors=string,data=string} "Record not found || Successfully get category"
 // @Failure 400 object responses.Response{errors=string,data=string} "Failed to process request"
 // @Failure 500 object responses.Response{errors=string,data=string} "Failed to process request"
@@ -101,8 +101,8 @@ func (h *categoryController) GetByList(c *gin.Context) {
 // @Tags	"Category"
 // @Version	1.0
 // @Produce	application/json
-// @Param	Authorization	header		string	true	"example:Bearer token (Bearer+space+token)."
-// @Param	id				path		integer	true	"Category ID"
+// @Param	Authorization	header		string	true	"example:Bearer token (Bearer+space+token)."	default(Bearer )
+// @Param	id				path		integer	true	"Category ID"									minimum(1)
 // @Success	200 object responses.Response{errors=string,data=string} "Record not found || Successfully get category"
 // @Failure	400 object responses.Response{errors=string,data=string} "Failed to process request"
 // @Failure	500 object responses.Response{errors=string,data=string} "Failed to process request"
@@ -137,9 +137,9 @@ func (h *categoryController) Get(c *gin.Context) {
 // @Tags	"Category"
 // @Version	1.0
 // @Produce	application/json
-// @Param	Authorization	header		string	true	"example:Bearer token (Bearer+space+token)."
-// @Param	id				path		integer	true	"Category ID"
-// @Param	name			query		string	true	"Category Name (maxLength: 100)"
+// @Param	Authorization	header		string	true	"example:Bearer token (Bearer+space+token)."	default(Bearer )
+// @Param	id				path		integer	true	"Category ID"									minimum(1)
+// @Param	name			query		string	true	"Category Name"									maxLength(100)
 // @Success	200 object responses.Response{errors=string,data=string} "Update Success"
 // @Failure	400 object responses.Response{errors=string,data=string} "Failed to process request"
 // @Failure	404 object responses.Response{errors=string,data=string} "Failed to process request"
@@ -190,8 +190,8 @@ func (h *categoryController) Update(c *gin.Context) {
 // @Tags	"Category"
 // @Version	1.0
 // @Produce	application/json
-// @Param	Authorization	header		string	true	"example:Bearer token (Bearer+space+token)."
-// @Param	id				path		integer	true	"Category ID"
+// @Param	Authorization	header		string	true	"example:Bearer token (Bearer+space+token)."	default(Bearer )
+// @Param	id				path		integer	true	"Category ID"									minimum(1)
 // @Success	200 object responses.Response{errors=string,data=string} "Delete Success"
 // @Failure	400 object responses.Response{errors=string,data=string} "Failed to process request"
 // @Failure	404 object responses.Response{errors=string,data=string} "Failed to process request"
