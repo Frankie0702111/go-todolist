@@ -95,6 +95,7 @@ make migrate-down number=1
 ```bash
 make generate-api-doc
 ```
+- [Swagger API doc](http://localhost:8642/api/v1/swagger/index.html)
 
 # Folder structure
 ```
