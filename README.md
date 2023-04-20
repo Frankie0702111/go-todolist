@@ -80,10 +80,10 @@ docker compose stop
 ```bash
 cd go-todolist
 
-# Up migration
+# Up all migration
 make migrate-up
 
-# Down migration
+# Down all migration
 make migrate-down
 
 # Specify batch up or down (If you want to go down to a specific file, it is recommended to open a new folder)
@@ -93,7 +93,7 @@ make migrate-down number=1
 
 ## 5.Build Swagger API documentation
 ```bash
-docker compose exec server swag init
+make generate-api-doc
 ```
 
 # Folder structure
