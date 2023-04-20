@@ -41,17 +41,17 @@ func (h *taskController) getUuid(user_id int64) interface{} {
 // @Version 1.0
 // @Accept	multipart/form-data
 // @Produce application/json
-// @Param	Authorization		header		string	true	"example:Bearer token (Bearer+space+token)."
-// @Param	user_id				formData	integer	true	"User ID"
-// @Param	category_id			formData	integer	true	"Category ID"
-// @Param	title				formData	string	true	"Title (maxLength: 100)"
+// @Param	Authorization		header		string	true	"example:Bearer token (Bearer+space+token)."		default(Bearer )
+// @Param	user_id				formData	integer	true	"User ID"											minimum(1)
+// @Param	category_id			formData	integer	true	"Category ID"										minimum(1)
+// @Param	title				formData	string	true	"Title"												maxLength(100)
 // @Param	note				formData	string	false	"Note"
 // @Param	url					formData	string	false	"Url"
 // @Param	image				formData	file	false	"Image"
 // @Param	specify_datetime	formData	string	false	"Specify Datetime (DateTime: 2006-01-02 15:04:05)"
 // @Param	is_specify_time		formData	boolean	false	"Is Specify Time"
-// @Param	priority			formData	integer	true	"Priority (Enum: [1, 2, 3])"
-// @Param	is_complete			formData	boolean	false	"Is Complete"
+// @Param	priority			formData	integer	true	"Priority"											Enums(1, 2, 3) default(1)
+// @Param	is_complete			formData	boolean	false	"Is Complete"										default(false)
 // @Success 201 object responses.Response{errors=string,data=string} "Create Success"
 // @Failure 400 object responses.Response{errors=string,data=string} "Failed to process request"
 // @Failure 500 object responses.Response{errors=string,data=string} "Failed to process request"
@@ -102,15 +102,15 @@ func (h *taskController) Create(c *gin.Context) {
 // @Tags	"Task"
 // @Version 1.0
 // @Produce application/json
-// @Param	Authorization		header		string	true	"example:Bearer token (Bearer+space+token)."
-// @Param	id					formData	integer	false	"Task ID"
-// @Param	user_id				formData	integer	false	"User ID"
-// @Param	title				formData	string	false	"Title (maxLength: 100)"
+// @Param	Authorization		header		string	true	"example:Bearer token (Bearer+space+token)."		default(Bearer )
+// @Param	id					formData	integer	false	"Task ID"											minimum(1)
+// @Param	user_id				formData	integer	false	"User ID"											minimum(1)
+// @Param	title				formData	string	false	"Title"												maxLength(100)
 // @Param	specify_datetime	formData	string	false	"Specify Datetime (DateTime: 2006-01-02 15:04:05)"
 // @Param	is_specify_time		formData	boolean	false	"Is Specify Time"
 // @Param	is_complete			formData	boolean	false	"Is Complete"
-// @Param	page				query		integer	true	"Page (Please start from 1)"
-// @Param	limit				query		integer	true	"Limit (Please start from 5 or 10)"
+// @Param	page				query		integer	true	"Page"												minimum(1) default(1)
+// @Param	limit				query		integer	true	"Limit"												minimum(2) default(5)
 // @Success 200 object responses.PageResponse{errors=string,data=string} "Successfully get task list"
 // @Failure 400 object responses.Response{errors=string,data=string} "Failed to process request"
 // @Router	/task [get]
@@ -133,8 +133,8 @@ func (h *taskController) GetByList(c *gin.Context) {
 // @Tags	"Task"
 // @Version 1.0
 // @Produce application/json
-// @Param	Authorization	header	string	true	"example:Bearer token (Bearer+space+token)."
-// @Param	id				path	integer	true	"Task ID"
+// @Param	Authorization	header	string	true	"example:Bearer token (Bearer+space+token)."	default(Bearer )
+// @Param	id				path	integer	true	"Task ID"										minimum(1)
 // @Success 200 object responses.Response{errors=string,data=string} "Record not found || Successfully get task"
 // @Failure 400 object responses.Response{errors=string,data=string} "Failed to process request"
 // @Failure 500 object responses.Response{errors=string,data=string} "Failed to process request"
@@ -171,16 +171,16 @@ func (h *taskController) Get(c *gin.Context) {
 // @Version 1.0
 // @Accept	multipart/form-data
 // @Produce application/json
-// @Param	Authorization		header		string	true	"example:Bearer token (Bearer+space+token)."
-// @Param	id					path		integer	true	"Task ID"
-// @Param	category_id			formData	integer	false	"Category ID"
-// @Param	title				formData	string	false	"Title (maxLength: 100)"
+// @Param	Authorization		header		string	true	"example:Bearer token (Bearer+space+token)."		default(Bearer )
+// @Param	id					path		integer	true	"Task ID"											minimum(1)
+// @Param	category_id			formData	integer	false	"Category ID"										minimum(1)
+// @Param	title				formData	string	false	"Title"												maxLength(100)
 // @Param	note				formData	string	false	"Note"
 // @Param	url					formData	string	false	"Url"
 // @Param	image				formData	file	false	"Image"
 // @Param	specify_datetime	formData	string	false	"Specify Datetime (DateTime: 2006-01-02 15:04:05)"
 // @Param	is_specify_time		formData	boolean	false	"Is Specify Time"
-// @Param	priority			formData	integer	true	"Priority (Enum: [1, 2, 3])"
+// @Param	priority			formData	integer	true	"Priority"											Enums(1, 2, 3)
 // @Param	is_complete			formData	boolean	false	"Is Complete"
 // @Success 200 object responses.Response{errors=string,data=string} "Update Success"
 // @Failure 400 object responses.Response{errors=string,data=string} "Failed to process request"
@@ -240,8 +240,8 @@ func (h *taskController) Update(c *gin.Context) {
 // @Tags	"Task"
 // @Version 1.0
 // @Produce application/json
-// @Param	Authorization	header	string	true	"example:Bearer token (Bearer+space+token)."
-// @Param	id				path	integer	true	"Task ID"
+// @Param	Authorization	header	string	true	"example:Bearer token (Bearer+space+token)."	default(Bearer )
+// @Param	id				path	integer	true	"Task ID"										minimum(1)
 // @Success 200 object responses.Response{errors=string,data=string} "Delete Success"
 // @Failure 400 object responses.Response{errors=string,data=string} "Failed to process request"
 // @Failure 404 object responses.Response{errors=string,data=string} "Failed to process request"

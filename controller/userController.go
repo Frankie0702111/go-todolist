@@ -150,7 +150,7 @@ func (h *userController) Register(c *gin.Context) {
 // @Tags	"Auth"
 // @Version 1.0
 // @Produce application/json
-// @Param	Authorization header string true "example:Bearer token (Bearer+space+token)."
+// @Param	Authorization header string true "example:Bearer token (Bearer+space+token)." default(Bearer )
 // @Success 200 object responses.Response{errors=string,data=string} "Refresh token successfully"
 // @Failure 401 object responses.Response{errors=string,data=string} "Failed to process request"
 // @Router	/auth/refresh [post]
@@ -176,7 +176,7 @@ func (h *userController) RefreshToken(c *gin.Context) {
 // @Tags	"Auth"
 // @Version 1.0
 // @Produce application/json
-// @Param	Authorization header string true "example:Bearer token (Bearer+space+token)."
+// @Param	Authorization header string true "example:Bearer token (Bearer+space+token)." default(Bearer )
 // @Success 200 object responses.Response{errors=string,data=string} "Successfully logged out"
 // @Failure 401 object responses.Response{errors=string,data=string} "Failed to process request"
 // @Router	/auth/logout [post]
