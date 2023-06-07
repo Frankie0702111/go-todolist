@@ -1,4 +1,16 @@
 # Project description
+重構專案架構以及 API，特別是存在風險的 Task api，於新的專案中這些問題已被完美的處理。<br>
+新專案的[位置](https://github.com/Frankie0702111/go-todolist-aws)<br>
+添加 : 單元測試、整合測試 (僅限部分範例)<br>
+取消 : 日誌輸出、IP 請求上限<br>
+
+The refactoring of the project architecture and API, especially the risky Task api, has been handled perfectly in the new project.<br>
+New project [location](https://github.com/Frankie0702111/go-todolist-aws)<br>
+添加 : 單元測試、整合測試 (僅限部分範例)<br>
+取消 : 日誌輸出、IP 請求上限<br>
+
+<br><br>
+
 這是一個簡單的待辦事項專案 <br>
 備註: <br>
 1. jwt-token TTL 時間預設 900 秒，中介層驗證 token TTL 成功時，計算該 token TTL 是否低於 5 分鐘，低於則重新給予一組新的 token。
