@@ -40,7 +40,7 @@ func AuthorizeJWT(s services.JWTService) gin.HandlerFunc {
 			// output the user_id
 			log.Println("Claim[user_id]: ", claims["user_id"])
 			// output the issuer
-			log.Println("Claim[issuer] :", claims["issuer"])
+			log.Println("Claim[issuer] :", claims["iss"])
 		}
 
 		// whitelist for token

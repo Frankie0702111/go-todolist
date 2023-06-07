@@ -16,7 +16,7 @@ func InitMySQL() *gorm.DB {
 	// Load .env file
 	errEnv := godotenv.Load()
 	if errEnv != nil {
-		log.Panic("Failed to load env file")
+		panic("Failed to load env file")
 	}
 
 	dbUser := os.Getenv("DB_USER")
@@ -64,7 +64,7 @@ func Close(db *gorm.DB) {
 
 	if err != nil {
 		fmt.Println("Failed to close connection form database : " + err.Error())
-		log.Panic("Failed to close connection form database : " + err.Error())
+		panic("Failed to close connection form database : " + err.Error())
 	}
 
 	// Close the database connection
