@@ -6,8 +6,8 @@
 
 The refactoring of the project architecture and API, especially the risky Task api, has been handled perfectly in the new project.<br>
 New project [location](https://github.com/Frankie0702111/go-todolist-aws)<br>
-添加 : 單元測試、整合測試 (僅限部分範例)<br>
-取消 : 日誌輸出、IP 請求上限<br>
+Add : Unit test, integration test (only for some cases).<br>
+Cancel : Log output, IP request limit.<br>
 
 <br><br>
 
