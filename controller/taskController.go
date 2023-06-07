@@ -78,8 +78,7 @@ func (h *taskController) Create(c *gin.Context) {
 		}
 	}
 
-	taskUuid := h.getUuid(input.UserID)
-	createTask, createTaskErr := h.taskService.CreateTask(input, taskUuid)
+	createTask, createTaskErr := h.taskService.CreateTask(input, nil)
 	if createTaskErr != nil {
 		match, _ := regexp.MatchString("Duplicate", createTaskErr.Error())
 		if match {
@@ -149,15 +148,14 @@ func (h *taskController) Get(c *gin.Context) {
 	}
 
 	task, taskErr := h.taskEntity.GetTask(input.Id)
-	if taskErr != nil {
-		response := responses.ErrorsResponse(http.StatusInternalServerError, "Failed to process request", taskErr.Error(), nil)
-		c.AbortWithStatusJSON(http.StatusInternalServerError, response)
-		return
-	}
-
 	if task.ID == 0 {
 		response := responses.SuccessResponse(http.StatusOK, "Record not found", nil)
 		c.JSON(http.StatusOK, response)
+		return
+	}
+	if taskErr != nil {
+		response := responses.ErrorsResponse(http.StatusInternalServerError, "Failed to process request", taskErr.Error(), nil)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, response)
 		return
 	}
 
@@ -198,14 +196,14 @@ func (h *taskController) Update(c *gin.Context) {
 	}
 
 	task, taskErr := h.taskEntity.GetTask(id.Id)
-	if taskErr != nil {
-		response := responses.ErrorsResponse(http.StatusInternalServerError, "Failed to process request", taskErr.Error(), nil)
-		c.AbortWithStatusJSON(http.StatusInternalServerError, response)
-		return
-	}
 	if task.ID == 0 {
 		response := responses.ErrorsResponseByCode(http.StatusNotFound, "Failed to process request", responses.RecordNotFound, nil)
 		c.AbortWithStatusJSON(http.StatusNotFound, response)
+		return
+	}
+	if taskErr != nil {
+		response := responses.ErrorsResponse(http.StatusInternalServerError, "Failed to process request", taskErr.Error(), nil)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, response)
 		return
 	}
 
@@ -257,14 +255,14 @@ func (h *taskController) Delete(c *gin.Context) {
 	}
 
 	task, taskErr := h.taskEntity.GetTask(input.Id)
-	if taskErr != nil {
-		response := responses.ErrorsResponse(http.StatusInternalServerError, "Failed to process request", taskErr.Error(), nil)
-		c.AbortWithStatusJSON(http.StatusInternalServerError, response)
-		return
-	}
 	if task.ID == 0 {
 		response := responses.ErrorsResponseByCode(http.StatusNotFound, "Failed to process request", responses.RecordNotFound, nil)
 		c.AbortWithStatusJSON(http.StatusNotFound, response)
+		return
+	}
+	if taskErr != nil {
+		response := responses.ErrorsResponse(http.StatusInternalServerError, "Failed to process request", taskErr.Error(), nil)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, response)
 		return
 	}
 

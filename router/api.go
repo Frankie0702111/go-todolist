@@ -9,7 +9,8 @@ import (
 	"go-todolist/services"
 	s3_utils "go-todolist/utils/aws"
 	gorm_utils "go-todolist/utils/gorm"
-	"go-todolist/utils/log"
+
+	// "go-todolist/utils/log"
 	redis_utils "go-todolist/utils/redis"
 	"os"
 
@@ -49,7 +50,7 @@ func SetupRouter() *gin.Engine {
 	// Load .env file
 	errEnv := godotenv.Load()
 	if errEnv != nil {
-		log.Panic("Failed to load env file")
+		panic("Failed to load env file")
 	}
 
 	appPort := fmt.Sprintf(":%s", os.Getenv("SERVER_PORT"))
@@ -91,8 +92,8 @@ func SetupRouter() *gin.Engine {
 
 	auth := r.Group(v1+"/auth", middleware.AuthorizeJWT(jwtService))
 	{
-		auth.POST("refresh", userController.RefreshToken)
-		auth.POST("logout", userController.Logout)
+		auth.POST("/refresh", userController.RefreshToken)
+		auth.POST("/logout", userController.Logout)
 	}
 
 	categories := r.Group(v1+"/category", middleware.AuthorizeJWT(jwtService))
